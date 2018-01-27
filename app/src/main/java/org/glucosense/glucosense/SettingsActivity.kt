@@ -1,4 +1,4 @@
-package glucosense.org
+package org.glucosense.glucosense
 
 import android.annotation.TargetApi
 import android.content.Context

@@ -1,4 +1,4 @@
-package glucosense.org
+package org.glucosense.glucosense
 
 import android.content.res.Configuration
 import android.os.Bundle

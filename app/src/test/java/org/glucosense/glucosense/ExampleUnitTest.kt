@@ -1,4 +1,4 @@
-package glucosense.org
+package org.glucosense.glucosense
 
 import org.junit.Test
 
