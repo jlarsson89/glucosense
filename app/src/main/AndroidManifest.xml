@@ -27,6 +27,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="glucosense.org.MainActivity" />
         </activity>
+        <activity android:name=".AddActivity" />
+        <activity android:name=".InjectionActivity" />
+        <activity android:name=".MealActivity"></activity>
     </application>
 
 </manifest>
