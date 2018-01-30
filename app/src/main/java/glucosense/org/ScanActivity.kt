@@ -1,26 +1,20 @@
 package glucosense.org
 
-import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_scan.*
 
-class MainActivity : AppCompatActivity() {
+class ScanActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_scan)
         setSupportActionBar(toolbar)
-        scanButton.setOnClickListener {
-            setContentView(R.layout.activity_scan)
-        }
-        historyButton.setOnClickListener {
-            setContentView(R.layout.activity_history)
-        }
-        statisticsButton.setOnClickListener {
-            setContentView(R.layout.activity_statistics)
+        mainActivityButton.setOnClickListener {
+            setContentView(R.layout.activity_main)
         }
     }
 
