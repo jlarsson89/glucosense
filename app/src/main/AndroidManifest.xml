@@ -32,7 +32,8 @@
         <activity android:name=".MealActivity" />
         <activity android:name=".ScanActivity" />
         <activity android:name=".StatisticsActivity" />
-        <activity android:name=".HistoryActivity"></activity>
+        <activity android:name=".HistoryActivity" />
+        <activity android:name=".AboutActivity"></activity>
     </application>
 
 </manifest>
