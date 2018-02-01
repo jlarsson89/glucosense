@@ -1,11 +1,11 @@
 package glucosense.org
 
-import android.content.Intent
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import glucosense.org.R.layout.activity_main
+//import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_scan.*
 
 class ScanActivity : AppCompatActivity() {
@@ -13,11 +13,11 @@ class ScanActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan)
+        //backButton.setOnContextClickListener()
+        //setSupportActionBar(toolbar)
         backButton.setOnClickListener {
-            //setContentView(R.layout.activity_main)
-            val intent = Intent(this, R.layout.activity_main::class.java)
-            startActivity(intent)
-            setContentView(R.layout.activity_main)
+          //  setContentView(R.layout.activity_history)
+            finish()
         }
     }
 
