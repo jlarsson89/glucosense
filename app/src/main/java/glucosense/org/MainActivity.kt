@@ -1,7 +1,9 @@
 package glucosense.org
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 
@@ -14,7 +16,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         scanButton.setOnClickListener {
-            setContentView(R.layout.activity_scan)
+            Log.i("pressed", "scan")
+            //setContentView(R.layout.activity_scan)
+            val intent = Intent(this, ScanActivity::class.java)
+            startActivity(intent)
         }
         historyButton.setOnClickListener {
             setContentView(R.layout.activity_history)
