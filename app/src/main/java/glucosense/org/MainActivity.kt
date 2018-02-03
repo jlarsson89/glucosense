@@ -47,8 +47,12 @@ class MainActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        if (item.itemId.equals("Settings")) {
-            setContentView(R.layout.activity_scan)
+        when (item.itemId) {
+            R.id.action_settings -> {
+                Log.i("menu", "settings")
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+            }
         }
         return when (item.itemId) {
             R.id.action_settings -> true
