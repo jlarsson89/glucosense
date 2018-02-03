@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         scanButton.setOnClickListener {
             Log.i("pressed", "scan")
-            //setContentView(R.layout.activity_scan)
             val intent = Intent(this, ScanActivity::class.java)
             startActivity(intent)
         }

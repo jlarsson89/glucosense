@@ -18,21 +18,13 @@ class ScanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan)
         Log.i("scan", "launched")
-        //backButton.setOnContextClickListener()
-        val toolbar: Toolbar = findViewById(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-        toolbar.setTitle("Scan")
-        val intent = Intent(this, MainActivity::class.java)
+        //val toolbar: Toolbar = findViewById(R.id.toolbar) as Toolbar
+        //setSupportActionBar(toolbar)
+        //toolbar.setTitle("Scan")
         backButton.setOnClickListener {
             Log.d("test", "works")
-            meh.text = "blah"
-            test(this.currentFocus)
-        }
-    }
-
-    fun test(view: View) {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
