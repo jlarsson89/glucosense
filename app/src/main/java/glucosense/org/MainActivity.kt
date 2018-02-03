@@ -15,16 +15,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        addButton.setOnClickListener {
+            Log.i("pressed", "add")
+            val intent = Intent(this, AddActivity::class.java)
+            startActivity(intent)
+        }
         scanButton.setOnClickListener {
             Log.i("pressed", "scan")
             val intent = Intent(this, ScanActivity::class.java)
             startActivity(intent)
         }
         historyButton.setOnClickListener {
-            setContentView(R.layout.activity_history)
+            Log.i("pressed", "history")
+            val intent = Intent(this, HistoryActivity::class.java)
+            startActivity(intent)
         }
         statisticsButton.setOnClickListener {
-            setContentView(R.layout.activity_statistics)
+            Log.i("pressed", "statistics")
+            val intent = Intent(this, StatisticsActivity::class.java)
+            startActivity(intent)
         }
     }
 

@@ -36,6 +36,11 @@
             tools:layout_height="wrap_content">
 
             <Button
+                android:id="@+id/addButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add"/>
+            <Button
                 android:id="@+id/historyButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
