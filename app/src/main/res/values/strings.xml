@@ -7,7 +7,11 @@
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
-
+    <string name="ip_address">127.0.0.1</string>
+    <string-array name="diabetes_types">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
     <string name="pref_description_social_recommendations">Recommendations for people to contact
         based on your message history
