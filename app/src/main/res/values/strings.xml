@@ -15,6 +15,12 @@
 
     <string name="pref_title_server_address">Server address</string>
     <string name="pref_default_server_address">127.0.0.1</string>
+    <string name="pref_title_age">Age</string>
+    <integer name="pref_default_age">1</integer>
+    <string name="pref_title_height">Height</string>
+    <integer name="pref_default_height">1</integer>
+    <string name="pref_title_weight">Weight</string>
+    <integer name="pref_default_weight">1</integer>
     <string name="pref_diabetes_type_title">Diabetes type</string>
     <string-array name="pref_diabetes_type_titles">
         <item>1</item>
