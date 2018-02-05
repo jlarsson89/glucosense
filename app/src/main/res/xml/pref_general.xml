@@ -17,6 +17,14 @@
         android:singleLine="true"
         android:title="@string/pref_title_server_address" />
 
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/pref_diabetes_type_titles"
+        android:entryValues="@array/pref_diabetes_type_values"
+        android:key="diabetes_type"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_diabetes_type_title" />
     <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
          dismiss it. -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->

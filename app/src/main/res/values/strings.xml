@@ -15,6 +15,15 @@
 
     <string name="pref_title_server_address">Server address</string>
     <string name="pref_default_server_address">127.0.0.1</string>
+    <string name="pref_diabetes_type_title">Diabetes type</string>
+    <string-array name="pref_diabetes_type_titles">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="pref_diabetes_type_values">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
     <string-array name="pref_example_list_titles">
