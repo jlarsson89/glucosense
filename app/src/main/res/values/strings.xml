@@ -30,6 +30,10 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+    <string name="pref_range_start_title">Range start</string>
+    <fraction name="pref_range_start_value">1.0</fraction>
+    <string name="pref_range_end_title">Range end</string>
+    <fraction name="pref_range_end_value">2.0</fraction>
 
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
     <string-array name="pref_example_list_titles">
