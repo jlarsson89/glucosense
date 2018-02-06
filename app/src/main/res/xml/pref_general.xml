@@ -11,7 +11,7 @@
     <EditTextPreference
         android:defaultValue="@string/pref_default_server_address"
         android:inputType="textUri"
-        android:key="example_text"
+        android:key="ip_address"
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
@@ -19,7 +19,7 @@
     <EditTextPreference
         android:defaultValue="@integer/pref_default_age"
         android:inputType="number"
-        android:key="example_text"
+        android:key="user_age"
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
@@ -27,7 +27,7 @@
     <EditTextPreference
         android:defaultValue="@integer/pref_default_height"
         android:inputType="number"
-        android:key="example_text"
+        android:key="user_height"
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
@@ -35,7 +35,7 @@
     <EditTextPreference
         android:defaultValue="@integer/pref_default_weight"
         android:inputType="number"
-        android:key="example_text"
+        android:key="user_weight"
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
@@ -51,7 +51,7 @@
     <EditTextPreference
         android:defaultValue="1.0"
         android:inputType="numberDecimal"
-        android:key="example_text"
+        android:key="user_range_start"
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
