@@ -12,7 +12,10 @@
     <string name="pref_description_social_recommendations">Recommendations for people to contact
         based on your message history
     </string>
-
+    <string-array name="add_choice">
+        <item>Injection</item>
+        <item>Meal</item>
+    </string-array>
     <string name="pref_title_server_address">Server address</string>
     <string name="pref_default_server_address">127.0.0.1</string>
     <string name="pref_title_age">Age</string>
