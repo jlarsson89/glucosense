@@ -55,6 +55,7 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:id="@+id/injectionTimeLabel"
                 android:layout_width="wrap_content"
@@ -62,12 +63,18 @@
                 android:text="Time" />
 
             <EditText
-                android:id="@+id/injectionTimeInput"
+                android:id="@+id/editText3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
+                android:inputType="time" />
+
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="date" />
         </TableRow>
 
 
