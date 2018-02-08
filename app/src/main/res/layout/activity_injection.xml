@@ -63,18 +63,10 @@
                 android:text="Time" />
 
             <EditText
-                android:id="@+id/editText3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="time" />
-
-            <EditText
                 android:id="@+id/editText2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="date" />
+                android:ems="10" />
         </TableRow>
 
 
