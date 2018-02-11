@@ -9,11 +9,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import com.beust.klaxon.JsonObject
+import com.beust.klaxon.Klaxon
+import com.beust.klaxon.Parser
 import kotlinx.android.synthetic.main.activity_injection.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class InjectionActivity : AppCompatActivity() {
+    class Injection(val datetime: String, val type: String, val units: String)
     var date: String? = null
     var time: String? = null
     var datetime: String? = null
@@ -72,6 +76,10 @@ class InjectionActivity : AppCompatActivity() {
                 Log.i("save", "fill in form")
             }
             Log.i("values", datetime + "\t" + type + "\t" + units)
+            val parser = Parser()
+            val stringBuilder = StringBuilder("{\"datetime\":\"$datetime\", \"type\":\"$type\",\"units\":\"$units\"}")
+            val json: JsonObject = parser.parse(stringBuilder) as JsonObject
+            Log.i("json", "${json.string("datetime")}, ${json.string("type")}, ${json.string("units")}")
         }
         cancelButton.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)

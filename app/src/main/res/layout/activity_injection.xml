@@ -82,7 +82,9 @@
             </LinearLayout>
 
         </TableRow>
-
+        <TableRow>
+            <TextView />
+        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
