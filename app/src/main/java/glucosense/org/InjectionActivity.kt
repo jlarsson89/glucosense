@@ -3,6 +3,7 @@ package glucosense.org
 import android.app.DatePickerDialog
 import android.app.ProgressDialog.show
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -53,15 +54,28 @@ class InjectionActivity : AppCompatActivity() {
                     true).show()
         }
         saveButton.setOnClickListener {
+            type = injectionTypeInput.text.toString()
+            units = injectionUnitsInput.text.toString()
             if (date != null && time != null) {
                 datetime = date + " " + time
             }
             if (datetime != null) {
                 Log.i("save", datetime)
             }
+            if (type != null) {
+                Log.i("save", type)
+            }
+            if (units != null) {
+                Log.i("save", units)
+            }
             else {
                 Log.i("save", "fill in form")
             }
+            Log.i("values", datetime + "\t" + type + "\t" + units)
+        }
+        cancelButton.setOnClickListener {
+            val intent = Intent(this, AddActivity::class.java)
+            startActivity(intent)
         }
     }
 }
