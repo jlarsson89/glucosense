@@ -89,7 +89,8 @@ class InjectionActivity : AppCompatActivity() {
                 Log.i("save", "fill in form")
             }
             Log.i("values", datetime + "\t" + type + "\t" + units)
-            val path = cacheDir.absolutePath+"/injections.json"
+            val path = filesDir.absolutePath+"/injections.json"
+            //val path = "/data/glucosense.org/injections.json"
             Log.i("path", path)
             val gson = Gson()
             //val parser = Parser()
@@ -97,6 +98,7 @@ class InjectionActivity : AppCompatActivity() {
             val injection = Injection(datetime, type, units)
             var towrite: String = gson.toJson(injection)
             val file = File(path)
+            Log.i("file", file.toString())
             file.writeText(towrite)
             //val json: JsonObject = parser.parse(stringBuilder) as JsonObject
             //Log.i("json", "${json.string("datetime")}, ${json.string("type")}, ${json.string("units")}")
