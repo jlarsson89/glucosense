@@ -12,12 +12,24 @@ import android.widget.TextView
 import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Klaxon
 import com.beust.klaxon.Parser
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_injection.*
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 class InjectionActivity : AppCompatActivity() {
-    class Injection(val datetime: String, val type: String, val units: String)
+    class Injection {
+        var datetime: String? = null
+        var type: String? = null
+        var units: String? = null
+        //constructor() : super() {}
+        constructor(datetime: String, type: String, units: String) {
+            this.datetime = datetime
+            this.type = type
+            this.units = units
+        }
+    }
     var date: String? = null
     var time: String? = null
     var datetime: String? = null
@@ -58,8 +70,9 @@ class InjectionActivity : AppCompatActivity() {
                     true).show()
         }
         saveButton.setOnClickListener {
-            type = injectionTypeInput.text.toString()
-            units = injectionUnitsInput.text.toString()
+            var type = injectionTypeInput.text.toString()
+            var units = injectionUnitsInput.text.toString()
+            var datetime = ""
             if (date != null && time != null) {
                 datetime = date + " " + time
             }
@@ -76,10 +89,17 @@ class InjectionActivity : AppCompatActivity() {
                 Log.i("save", "fill in form")
             }
             Log.i("values", datetime + "\t" + type + "\t" + units)
-            val parser = Parser()
-            val stringBuilder = StringBuilder("{\"datetime\":\"$datetime\", \"type\":\"$type\",\"units\":\"$units\"}")
-            val json: JsonObject = parser.parse(stringBuilder) as JsonObject
-            Log.i("json", "${json.string("datetime")}, ${json.string("type")}, ${json.string("units")}")
+            val path = cacheDir.absolutePath+"/injections.json"
+            Log.i("path", path)
+            val gson = Gson()
+            //val parser = Parser()
+            //val stringBuilder = StringBuilder("{\"datetime\":\"$datetime\", \"type\":\"$type\",\"units\":\"$units\"}")
+            val injection = Injection(datetime, type, units)
+            var towrite: String = gson.toJson(injection)
+            val file = File(path)
+            file.writeText(towrite)
+            //val json: JsonObject = parser.parse(stringBuilder) as JsonObject
+            //Log.i("json", "${json.string("datetime")}, ${json.string("type")}, ${json.string("units")}")
         }
         cancelButton.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)
