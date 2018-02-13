@@ -1,21 +1,15 @@
 package glucosense.org
 
 import android.app.DatePickerDialog
-import android.app.ProgressDialog.show
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.TextView
-import com.beust.klaxon.JsonObject
-import com.beust.klaxon.Klaxon
-import com.beust.klaxon.Parser
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_injection.*
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 
 class InjectionActivity : AppCompatActivity() {
@@ -23,7 +17,6 @@ class InjectionActivity : AppCompatActivity() {
         var datetime: String? = null
         var type: String? = null
         var units: String? = null
-        //constructor() : super() {}
         constructor(datetime: String, type: String, units: String) {
             this.datetime = datetime
             this.type = type
@@ -90,18 +83,13 @@ class InjectionActivity : AppCompatActivity() {
             }
             Log.i("values", datetime + "\t" + type + "\t" + units)
             val path = filesDir.absolutePath+"/injections.json"
-            //val path = "/data/glucosense.org/injections.json"
             Log.i("path", path)
             val gson = Gson()
-            //val parser = Parser()
-            //val stringBuilder = StringBuilder("{\"datetime\":\"$datetime\", \"type\":\"$type\",\"units\":\"$units\"}")
             val injection = Injection(datetime, type, units)
             var towrite: String = gson.toJson(injection)
             val file = File(path)
             Log.i("file", file.toString())
             file.writeText(towrite)
-            //val json: JsonObject = parser.parse(stringBuilder) as JsonObject
-            //Log.i("json", "${json.string("datetime")}, ${json.string("type")}, ${json.string("units")}")
         }
         cancelButton.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)
