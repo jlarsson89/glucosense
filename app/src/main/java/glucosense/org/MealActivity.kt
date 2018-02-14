@@ -29,6 +29,10 @@ class MealActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meal)
+        backButton.setOnClickListener {
+            val intent = Intent(this, AddActivity::class.java)
+            startActivity(intent)
+        }
         /*val editDate = findViewById<View>(R.id.datePicker)
         val editTime = findViewById<View>(R.id.timePicker)
         val cal = Calendar.getInstance()
