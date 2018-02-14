@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_injection.*
+import kotlinx.android.synthetic.main.activity_meal.*
 import java.io.File
 import java.util.*
 
@@ -28,8 +28,8 @@ class MealActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_injection)
-        val editDate = findViewById<View>(R.id.datePicker)
+        setContentView(R.layout.activity_meal)
+        /*val editDate = findViewById<View>(R.id.datePicker)
         val editTime = findViewById<View>(R.id.timePicker)
         val cal = Calendar.getInstance()
         val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
@@ -59,8 +59,8 @@ class MealActivity : AppCompatActivity() {
                     cal.get(Calendar.HOUR_OF_DAY),
                     cal.get(Calendar.MINUTE),
                     true).show()
-        }
-        saveButton.setOnClickListener {/*
+        }*/
+        /*saveButton.setOnClickListener {
             var type = injectionTypeInput.text.toString()
             var units = injectionUnitsInput.text.toString()
             var datetime = ""
@@ -87,12 +87,11 @@ class MealActivity : AppCompatActivity() {
             var towrite: String = gson.toJson(injection)
             val file = File(path)
             Log.i("file", file.toString())
-            file.writeText(towrite)*/
+            file.writeText(towrite)
         }
         cancelButton.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)
             startActivity(intent)
-        }
+        }*/
     }
-
 }
