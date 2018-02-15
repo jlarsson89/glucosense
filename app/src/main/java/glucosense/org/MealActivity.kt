@@ -3,10 +3,13 @@ package glucosense.org
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.opengl.Visibility
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
+import android.widget.LinearLayout
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_meal.*
 import java.io.File
@@ -25,11 +28,23 @@ class MealActivity : AppCompatActivity() {
     var date: String? = null
     var time: String? = null
     var datetime: String? = null
+    var ingredient1_name: String? = null
+    var ingredient1_qty: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meal)
+        val ingredient1name = findViewById<View>(R.id.ingredient_1_name) as EditText
+        ingredient1_name = ingredient1name.text.toString()
+        val ingredient1qty = findViewById<View>(R.id.ingredient_1_quantity) as EditText
+        ingredient1_qty = ingredient1qty.text.toString()
+        val ingredient2row = findViewById<View>(R.id.ingredient_2_row)
+        if (ingredient1_name != "" && ingredient1_qty != "") {
+            ingredient2row.visibility = View.VISIBLE
+        }
         backButton.setOnClickListener {
+            Log.i("values", ingredient1_name)
+            Log.i("values", ingredient1_qty)
             val intent = Intent(this, AddActivity::class.java)
             startActivity(intent)
         }
