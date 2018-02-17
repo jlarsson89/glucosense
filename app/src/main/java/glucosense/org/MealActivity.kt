@@ -33,104 +33,79 @@ class MealActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meal)
-        //val ingredient1name = findViewById<View>(R.id.ingredient_1_name) as EditText
-        //ingredient1_name = ingredient1name.text.toString()
-        //val ingredient1qty = findViewById<View>(R.id.ingredient_1_quantity) as EditText
-        //ingredient1_qty = ingredient1qty.text.toString()
-        //val ingredient2row = findViewById<View>(R.id.ingredient_2_row)
-        //if (ingredient1_name != "" && ingredient1_qty != "") {
-        //ingredient2row.visibility = View.VISIBLE
-        //}
-        val table = TableLayout(this)
-        contentLayout.addView(table)
-        val row1 = TableRow(this)
-        val label1 = TextView(this)
-        val input1 = EditText(this)
-        val row2 = TableRow(this)
-        val label2 = TextView(this)
-        val input2 = EditText(this)
-        label1.setText("blah")
-        input1.hint = "quantity"
-        row1.addView(label1)
-        row1.addView(input1)
-        if (input1.text.isNotEmpty()) {
-            label2.setText("meh")
-            input2.hint = "qty"
-            row2.addView(label2)
-            row2.addView(input2)
-            table.addView(row2)
+        val ing1Name = findViewById<EditText>(R.id.ingredient1Name)
+        val ing1Qty = findViewById<EditText>(R.id.ingredient1Qty)
+        val ing2Row = findViewById<LinearLayout>(R.id.ingredient2Row)
+        refreshButton.setOnClickListener {
+            if (ing1Name.text.toString().isNotEmpty() && ing1Qty.text.toString().isNotEmpty()) {
+                ing2Row.visibility = View.VISIBLE
+            }
         }
-        table.addView(row1)
-
+        saveButton.setOnClickListener {
+        }
         backButton.setOnClickListener {
-                //Log.i("values", ingredient1_name)
-                //Log.i("values", ingredient1_qty)
             val intent = Intent(this, AddActivity::class.java)
             startActivity(intent)
         }
-            /*val editDate = findViewById<View>(R.id.datePicker)
-            val editTime = findViewById<View>(R.id.timePicker)
-            val cal = Calendar.getInstance()
-            val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
-                cal.set(Calendar.YEAR, year)
-                cal.set(Calendar.MONTH, month)
-                cal.set(Calendar.DAY_OF_MONTH, day)
-                Log.i("date", year.toString() + "-" + month + "-" + day)
-                date = year.toString() + "-" + (month+1).toString() + "-" + day.toString()
-                Log.i("verify", date)
+        val editDate = findViewById<View>(R.id.datePicker)
+        val editTime = findViewById<View>(R.id.timePicker)
+        val cal = Calendar.getInstance()
+        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, month)
+            cal.set(Calendar.DAY_OF_MONTH, day)
+            Log.i("date", year.toString() + "-" + month + "-" + day)
+            date = year.toString() + "-" + (month+1).toString() + "-" + day.toString()
+            Log.i("verify", date)
+        }
+        editDate.setOnClickListener {
+            DatePickerDialog(this@MealActivity, dateSetListener,
+                    cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH),
+                    cal.get(Calendar.DAY_OF_MONTH)).show()
+        }
+        val timeSetListener = TimePickerDialog.OnTimeSetListener { view, hour, minute ->
+            cal.set(Calendar.HOUR_OF_DAY, hour)
+            cal.set(Calendar.MINUTE, minute)
+            val format = "HH:MM"
+            Log.i("time", hour.toString() + ":" + minute)
+            time = hour.toString() + ":" + minute.toString()
+            Log.i("verify", time)
+        }
+        editTime.setOnClickListener {
+            TimePickerDialog(this@MealActivity, timeSetListener,
+                    cal.get(Calendar.HOUR_OF_DAY),
+                    cal.get(Calendar.MINUTE),
+                    true).show()
+        }
+        /*saveButton.setOnClickListener {
+            var type = injectionTypeInput.text.toString()
+            var units = injectionUnitsInput.text.toString()
+            var datetime = ""
+            if (date != null && time != null) {
+                datetime = date + " " + time
             }
-            editDate.setOnClickListener {
-                DatePickerDialog(this@MealActivity, dateSetListener,
-                        cal.get(Calendar.YEAR),
-                        cal.get(Calendar.MONTH),
-                        cal.get(Calendar.DAY_OF_MONTH)).show()
+            if (datetime != null) {
+                Log.i("save", datetime)
             }
-            val timeSetListener = TimePickerDialog.OnTimeSetListener { view, hour, minute ->
-                cal.set(Calendar.HOUR_OF_DAY, hour)
-                cal.set(Calendar.MINUTE, minute)
-                val format = "HH:MM"
-                Log.i("time", hour.toString() + ":" + minute)
-                time = hour.toString() + ":" + minute.toString()
-                Log.i("verify", time)
+            if (type != null) {
+                Log.i("save", type)
             }
-            editTime.setOnClickListener {
-                TimePickerDialog(this@MealActivity, timeSetListener,
-                        cal.get(Calendar.HOUR_OF_DAY),
-                        cal.get(Calendar.MINUTE),
-                        true).show()
-            }*/
-            /*saveButton.setOnClickListener {
-                var type = injectionTypeInput.text.toString()
-                var units = injectionUnitsInput.text.toString()
-                var datetime = ""
-                if (date != null && time != null) {
-                    datetime = date + " " + time
-                }
-                if (datetime != null) {
-                    Log.i("save", datetime)
-                }
-                if (type != null) {
-                    Log.i("save", type)
-                }
-                if (units != null) {
-                    Log.i("save", units)
-                }
-                else {
-                    Log.i("save", "fill in form")
-                }
-                Log.i("values", datetime + "\t" + type + "\t" + units)
-                val path = filesDir.absolutePath+"/meals.json"
-                Log.i("path", path)
-                val gson = Gson()
-                val injection = Meal(datetime, ingredients)
-                var towrite: String = gson.toJson(injection)
-                val file = File(path)
-                Log.i("file", file.toString())
-                file.writeText(towrite)
+            if (units != null) {
+                Log.i("save", units)
             }
-            cancelButton.setOnClickListener {
-                val intent = Intent(this, AddActivity::class.java)
-                startActivity(intent)
-            }*/
+            else {
+                Log.i("save", "fill in form")
+            }
+            Log.i("values", datetime + "\t" + type + "\t" + units)
+            val path = filesDir.absolutePath+"/meals.json"
+            Log.i("path", path)
+            val gson = Gson()
+            val injection = Meal(datetime, ingredients)
+            var towrite: String = gson.toJson(injection)
+            val file = File(path)
+            Log.i("file", file.toString())
+            file.writeText(towrite)
+        }*/
     }
 }
