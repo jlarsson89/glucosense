@@ -20,6 +20,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ScanActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.NDEF_DISCOVERED" />
+                <data
+                    android:scheme="vnd.android.nfc" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity">
@@ -30,7 +38,6 @@
         <activity android:name=".AddActivity" />
         <activity android:name=".InjectionActivity" />
         <activity android:name=".MealActivity" />
-        <activity android:name=".ScanActivity" />
         <activity android:name=".StatisticsActivity" />
         <activity android:name=".HistoryActivity" />
         <activity android:name=".AboutActivity"></activity>
