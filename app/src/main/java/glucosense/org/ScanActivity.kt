@@ -23,6 +23,7 @@ class ScanActivity : AppCompatActivity() {
                 Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0)
         if (intent != null) {
             //Log.i("found intent", intent.action.toString())
+            Log.i("intent", intent.toString())
             processIntent(intent)
         }
         Log.i("nfc supported", (nfcAdapter != null).toString())
@@ -51,10 +52,11 @@ class ScanActivity : AppCompatActivity() {
     }
 
     private fun processIntent(checkIntent: Intent) {
-        if (checkIntent.action == NfcAdapter.ACTION_NDEF_DISCOVERED) {
+        if (/*checkIntent.action == NfcAdapter.ACTION_NDEF_DISCOVERED || */checkIntent.action == NfcAdapter.ACTION_TAG_DISCOVERED/* || checkIntent.action == NfcAdapter.ACTION_TECH_DISCOVERED*/) {
             Log.i("new ndef intent", checkIntent.toString())
-            val rawMessages = checkIntent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
-            Log.i("raw messages", rawMessages.size.toString())
+            //val rawMessages = checkIntent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
+            val rawMessages = checkIntent.getParcelableArrayExtra(NfcAdapter.EXTRA_TAG)
+            //Log.i("raw messages", rawMessages.size.toString())
             if (rawMessages != null) {
                 val messages = arrayOfNulls<NdefMessage?>(rawMessages.size)
                 for (i in rawMessages.indices) {
@@ -79,7 +81,6 @@ class ScanActivity : AppCompatActivity() {
                         Log.i("recordcontent", curRecord.payload.contentToString())
                     }
                 }
-
             }
         }
     }
