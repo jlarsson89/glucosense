@@ -7,6 +7,7 @@ import android.nfc.NfcAdapter
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_scan.*
 
 class ScanActivity : AppCompatActivity() {
@@ -54,16 +55,22 @@ class ScanActivity : AppCompatActivity() {
     private fun processIntent(checkIntent: Intent) {
         if (/*checkIntent.action == NfcAdapter.ACTION_NDEF_DISCOVERED || */checkIntent.action == NfcAdapter.ACTION_TAG_DISCOVERED/* || checkIntent.action == NfcAdapter.ACTION_TECH_DISCOVERED*/) {
             Log.i("new ndef intent", checkIntent.toString())
-            //val rawMessages = checkIntent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
-            val rawMessages = checkIntent.getParcelableArrayExtra(NfcAdapter.EXTRA_TAG)
+            val rawMessages = checkIntent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
+            val extras = checkIntent.extras
+            Log.i("intent", extras.toString())
+            val label = TextView(this)
+            label.text = extras.toString()
+            scanActivity.addView(label)
+            //val rawMessages = checkIntent.getParcelableArrayExtra(NfcAdapter.EXTRA_TAG)
             //Log.i("raw messages", rawMessages.size.toString())
             if (rawMessages != null) {
-                val messages = arrayOfNulls<NdefMessage?>(rawMessages.size)
-                for (i in rawMessages.indices) {
-                    val msg = rawMessages[i] as NdefMessage
-                    Log.i("msg", msg.toString())
-                }
-                processNdefMessages(messages)
+                //val messages = arrayOf<NdefMessage?>()
+                //val messages = arrayOfNulls<NdefMessage?>(rawMessages.size)
+                //for (i in rawMessages.indices) {
+                    //val msg = rawMessages[i] as NdefMessage
+                    //Log.i("msg", msg.toString())
+                //}
+                //processNdefMessages(messages)
             }
         }
     }
