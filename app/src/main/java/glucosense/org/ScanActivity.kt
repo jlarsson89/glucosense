@@ -34,7 +34,7 @@ class ScanActivity : AppCompatActivity() {
     private var nfcAdapter: NfcAdapter? = null
     private var nfcPendingIntent: PendingIntent? = null
     private val mNdefPushMessage: NdefMessage? = null
-    private val mTags = ArrayList<Tag?>()
+    private val tags = ArrayList<Tag?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -288,19 +288,18 @@ class ScanActivity : AppCompatActivity() {
     }
 
     private fun newTextRecord(text: String, locale: Locale, encodeInUtf8: Boolean): NdefRecord {
-        /*val langBytes = locale.getLanguage().getBytes(Charset.forName("US-ASCII"))
-
+        val langBytes = locale.language.toByteArray()
+        //val langBytes = locale.getLanguage().getBytes(Charset.forName("US-ASCII"))
         val utfEncoding = if (encodeInUtf8) Charset.forName("UTF-8") else Charset.forName("UTF-16")
-        val textBytes = text.getBytes(utfEncoding)
-
+        //val textBytes = text.getBytes(utfEncoding)
+        val textBytes = text.toByteArray()
         val utfBit = if (encodeInUtf8) 0 else 1 shl 7
         val status = (utfBit + langBytes.size).toChar()
-
+        val x = langBytes.size + textBytes.size + 1
         val data = ByteArray(1 + langBytes.size + textBytes.size)
         data[0] = status.toByte()
         System.arraycopy(langBytes, 0, data, 1, langBytes.size)
         System.arraycopy(textBytes, 0, data, 1 + langBytes.size, textBytes.size)
-*/
         val data = ByteArray(0)
         return NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, ByteArray(0), data)
     }
