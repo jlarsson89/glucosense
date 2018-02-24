@@ -296,11 +296,11 @@ class ScanActivity : AppCompatActivity() {
         val utfBit = if (encodeInUtf8) 0 else 1 shl 7
         val status = (utfBit + langBytes.size).toChar()
         val x = langBytes.size + textBytes.size + 1
-        val data = ByteArray(1 + langBytes.size + textBytes.size)
+        var data = ByteArray(1 + langBytes.size + textBytes.size)
         data[0] = status.toByte()
         System.arraycopy(langBytes, 0, data, 1, langBytes.size)
         System.arraycopy(textBytes, 0, data, 1 + langBytes.size, textBytes.size)
-        val data = ByteArray(0)
+        data = ByteArray(0)
         return NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, ByteArray(0), data)
     }
 
