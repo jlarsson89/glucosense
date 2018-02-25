@@ -217,51 +217,55 @@ class ScanActivity : AppCompatActivity() {
 
     private fun toHex(bytes: ByteArray): String {
         val sb = StringBuilder()
-        /*for (i in bytes.indices.reversed()) {
-            val b = bytes[i] and 0xff
+        for (i in bytes.indices.reversed()) {
+            //val b = bytes[i] and 0xff
+            val b = bytes[i].toInt()
             if (b < 0x10)
                 sb.append('0')
             sb.append(Integer.toHexString(b))
             if (i > 0) {
                 sb.append(" ")
             }
-        }*/
+        }
         return sb.toString()
     }
 
     private fun toReversedHex(bytes: ByteArray): String {
         val sb = StringBuilder()
-        /*for (i in bytes.indices) {
+        for (i in bytes.indices) {
             if (i > 0) {
                 sb.append(" ")
             }
-            val b = bytes[i] and 0xff
+            //val b = bytes[i] and 0xff
+            val b = bytes[i].toInt()
             if (b < 0x10)
                 sb.append('0')
             sb.append(Integer.toHexString(b))
-        }*/
+        }
         return sb.toString()
     }
 
     private fun toDec(bytes: ByteArray): Long {
         var result: Long = 0
         var factor: Long = 1
-        /*for (i in bytes.indices) {
-            val value = bytes[i] and 0xffL
+        for (i in bytes.indices) {
+            //val value = bytes[i] and 0xffL
+            val value = bytes[i].toInt()
             result += value * factor
             factor *= 256L
-        }*/
+        }
         return result
     }
 
     private fun toReversedDec(bytes: ByteArray): Long {
         var result: Long = 0
         var factor: Long = 1
-        /*for (i in bytes.indices.reversed()) {
-            val value = bytes[i] and 0xffL
+        for (i in bytes.indices.reversed()) {
+            //val value = bytes[i] and 0xffL
+            val value = bytes[i].toInt()
             result += value * factor
             factor *= 256L
-        }*/
+        }
         return result
     }
 
