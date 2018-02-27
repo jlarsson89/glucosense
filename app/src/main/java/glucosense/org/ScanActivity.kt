@@ -2,35 +2,362 @@ package glucosense.org
 
 import android.app.PendingIntent
 import android.content.Intent
-import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.nfc.tech.NfcV
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import kotlinx.android.synthetic.main.activity_scan.*
-import android.nfc.NdefRecord
 import android.nfc.Tag
-import android.nfc.tech.NfcA
-import android.os.Parcelable
-import android.icu.util.ULocale.getLanguage
-import java.nio.charset.Charset
 import java.util.*
-import java.nio.file.Files.size
-import android.widget.LinearLayout
-import android.view.LayoutInflater
 //import android.support.test.runner.internal.deps.aidl.Codecs.writeStrongBinder
-import android.os.Parcel
-import android.nfc.tech.MifareClassic
-import android.os.IBinder
-import android.nfc.tech.MifareUltralight
 import kotlin.experimental.and
-import kotlin.experimental.or
+//import android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
+//import sun.text.normalizer.UTF16.append
+//import android.support.test.runner.intent.IntentStubberRegistry.reset
+import android.media.MediaPlayer
+import android.media.MediaPlayer.OnCompletionListener
+import android.widget.Toast
+import android.os.Vibrator
+import android.os.AsyncTask
+import android.app.Activity
+import android.content.IntentFilter
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStreamWriter
+import java.text.SimpleDateFormat
 
 
 class ScanActivity : AppCompatActivity() {
+    val MIME_TEXT_PLAIN = "text/plain"
 
+    private var mNfcAdapter: NfcAdapter? = null
+
+    private var lectura: String? = null
+    private val buffer: String? = null
+    private var currentGlucose = 0f
+    private var tvResult: TextView? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_scan)
+
+        tvResult = findViewById(R.id.result) as TextView
+
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
+
+        if (mNfcAdapter == null) {
+            // Stop here, we definitely need NFC
+            Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show()
+            finish()
+            return
+
+        }
+
+        if (!mNfcAdapter!!.isEnabled) {
+            Toast.makeText(this, "NFC is disabled.", Toast.LENGTH_LONG).show()
+        }
+
+        handleIntent(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        /**
+         * It's important, that the activity is in the foreground (resumed). Otherwise
+         * an IllegalStateException is thrown.
+         */
+        setupForegroundDispatch(this, mNfcAdapter)
+    }
+
+    override fun onPause() {
+        /**
+         * Call this before onPause, otherwise an IllegalArgumentException is thrown as well.
+         */
+        stopForegroundDispatch(this, mNfcAdapter)
+
+        super.onPause()
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        /**
+         * This method gets called, when a new Intent gets associated with the current activity instance.
+         * Instead of creating a new activity, onNewIntent will be called. For more information have a look
+         * at the documentation.
+         *
+         * In our case this method gets called, when the user attaches a Tag to the device.
+         */
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        val action = intent.action
+        if (NfcAdapter.ACTION_TECH_DISCOVERED == action) {
+
+            Log.i("socialdiabetes", "NfcAdapter.ACTION_TECH_DISCOVERED")
+            // In case we would still use the Tech Discovered Intent
+            val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
+            val techList = tag.techList
+            val searchedTech = NfcV::class.java.name
+            NfcVReaderTask().execute(tag)
+
+        }
+    }
+
+    /**
+     * @param activity The corresponding [Activity] requesting the foreground dispatch.
+     * @param adapter The [NfcAdapter] used for the foreground dispatch.
+     */
+    fun setupForegroundDispatch(activity: Activity, adapter: NfcAdapter?) {
+        val intent = Intent(activity.applicationContext, activity.javaClass)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+
+        val pendingIntent = PendingIntent.getActivity(activity.applicationContext, 0, intent, 0)
+
+        val filters = arrayOfNulls<IntentFilter>(1)
+        val techList = arrayOf<Array<String>>()
+
+        // Notice that this is the same filter as in our manifest.
+        filters[0] = IntentFilter()
+        filters[0]?.addAction(NfcAdapter.ACTION_NDEF_DISCOVERED)
+        filters[0]?.addCategory(Intent.CATEGORY_DEFAULT)
+
+        adapter!!.enableForegroundDispatch(activity, pendingIntent, filters, techList)
+    }
+
+    /**
+     * @param activity The corresponding [BaseActivity] requesting to stop the foreground dispatch.
+     * @param adapter The [NfcAdapter] used for the foreground dispatch.
+     */
+    fun stopForegroundDispatch(activity: Activity, adapter: NfcAdapter?) {
+        adapter!!.disableForegroundDispatch(activity)
+    }
+
+    protected val hexArray = "0123456789ABCDEF".toCharArray()
+    fun bytesToHex(bytes: ByteArray): String {
+        val hexChars = CharArray(bytes.size * 2)
+        for (j in bytes.indices) {
+            //val v = bytes[j] and 0xFF
+            val v = bytes[j].toInt()
+            hexChars[j * 2] = hexArray[v.ushr(4)]
+            hexChars[j * 2 + 1] = hexArray[v and 0x0F]
+        }
+        return String(hexChars)
+    }
+
+    /**
+     *
+     * Background task for reading the data. Do not block the UI thread while reading.
+     *
+     */
+    private inner class NfcVReaderTask : AsyncTask<Tag, Void, String>() {
+
+        override fun onPostExecute(result: String) {
+            //val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            //vibrator.vibrate(1000)
+            //Abbott.this.finish();
+        }
+
+        override fun doInBackground(vararg params: Tag): String? {
+            val tag = params[0]
+
+            val nfcvTag = NfcV.get(tag)
+            Log.i("socialdiabetes", "Enter NdefReaderTask: " + nfcvTag.toString())
+
+            Log.i("socialdiabetes", "Tag ID: " + tag.id)
+
+
+            try {
+                nfcvTag.connect()
+            } catch (e: IOException) {
+                this@ScanActivity.runOnUiThread(java.lang.Runnable { Toast.makeText(applicationContext, "Error opening NFC connection!", Toast.LENGTH_SHORT).show() })
+
+                return null
+            }
+
+            lectura = ""
+
+            val bloques = Array(40) { ByteArray(8) }
+            val allBlocks = ByteArray(40 * 8)
+
+
+            Log.i("socialdiabetes", "---------------------------------------------------------------")
+            Log.i("socialdiabetes", "nfcvTag ID: " + nfcvTag.getDsfId());
+
+            Log.i("socialdiabetes", "getMaxTransceiveLength: " + nfcvTag.getMaxTransceiveLength());
+            try {
+
+                // Get system information (0x2B)
+                var cmd = byteArrayOf(0x00.toByte(), // Flags
+                        0x2B.toByte() // Command: Get system information
+                )
+                var systeminfo = nfcvTag.transceive(cmd)
+
+                //Log.d("socialdiabetes", "systeminfo: "+systeminfo.toString()+" - "+systeminfo.length);
+                Log.i("socialdiabetes", "systeminfo HEX: " + bytesToHex(systeminfo));
+
+                systeminfo = Arrays.copyOfRange(systeminfo, 2, systeminfo.size - 1)
+
+                val memorySize = byteArrayOf(systeminfo[6], systeminfo[5])
+                Log.i("socialdiabetes", "Memory Size: " + bytesToHex(memorySize) + " / " + Integer.parseInt(bytesToHex(memorySize).trim { it <= ' ' }, 16))
+
+                val blocks = byteArrayOf(systeminfo[8])
+                Log.i("socialdiabetes", "blocks: " + bytesToHex(blocks) + " / " + Integer.parseInt(bytesToHex(blocks).trim { it <= ' ' }, 16))
+
+                val totalBlocks = Integer.parseInt(bytesToHex(blocks).trim { it <= ' ' }, 16)
+
+                for (i in 3..40) { // Leer solo los bloques que nos interesan
+                    /*
+	                cmd = new byte[] {
+	                    (byte)0x00, // Flags
+	                    (byte)0x23, // Command: Read multiple blocks
+	                    (byte)i, // First block (offset)
+	                    (byte)0x01  // Number of blocks
+	                };
+	                */
+                    // Read single block
+                    cmd = byteArrayOf(0x00.toByte(), // Flags
+                            0x20.toByte(), // Command: Read multiple blocks
+                            i.toByte() // block (offset)
+                    )
+
+                    var oneBlock = nfcvTag.transceive(cmd)
+                    Log.i("socialdiabetes", "userdata: " + oneBlock.toString() + " - " + oneBlock.size)
+                    oneBlock = Arrays.copyOfRange(oneBlock, 1, oneBlock.size)
+                    bloques[i - 3] = Arrays.copyOf(oneBlock, 8)
+
+
+                    Log.i("socialdiabetes", "userdata HEX: " + bytesToHex(oneBlock))
+
+                    lectura = lectura + bytesToHex(oneBlock) + "\r\n"
+                }
+
+                var s = ""
+                for (i in 0..39) {
+                    Log.i("socialdiabetes", bytesToHex(bloques[i]))
+                    s = s + bytesToHex(bloques[i])
+                }
+
+                Log.i("socialdiabetes", "S: " + s)
+
+                Log.i("socialdiabetes", "Next read: " + s.substring(4, 6))
+                val current = Integer.parseInt(s.substring(4, 6), 16)
+                Log.i("socialdiabetes", "Next read: " + current)
+                Log.i("socialdiabetes", "Next historic read " + s.substring(6, 8))
+
+                val bloque1 = arrayOfNulls<String>(16)
+                val bloque2 = arrayOfNulls<String>(32)
+                Log.i("socialdiabetes", "--------------------------------------------------")
+                var ii = 0
+                run {
+                    var i = 8
+                    while (i < 8 + 15 * 12) {
+                        Log.i("socialdiabetes", s.substring(i, i + 12))
+                        bloque1[ii] = s.substring(i, i + 12)
+
+                        val g = s.substring(i + 2, i + 4) + s.substring(i, i + 2)
+
+                        if (current == ii) {
+                            currentGlucose = glucoseReading(Integer.parseInt(g, 16))
+                        }
+                        ii++
+                        i += 12
+
+
+                    }
+                }
+                lectura = lectura + "Current approximate glucose " + currentGlucose
+                Log.i("socialdiabetes", "Current approximate glucose " + currentGlucose)
+
+                Log.i("socialdiabetes", "--------------------------------------------------")
+                ii = 0
+                var i = 188
+                while (i < 188 + 31 * 12) {
+                    Log.i("socialdiabetes", s.substring(i, i + 12))
+                    bloque2[ii] = s.substring(i, i + 12)
+                    ii++
+                    i += 12
+                }
+                Log.i("socialdiabetes", "--------------------------------------------------")
+
+            } catch (e: IOException) {
+                this@ScanActivity.runOnUiThread(java.lang.Runnable { Toast.makeText(applicationContext, "Error reading NFC!", Toast.LENGTH_SHORT).show() })
+
+                return null
+            }
+
+            addText(lectura)
+
+            try {
+                nfcvTag.close()
+            } catch (e: IOException) {
+                /*
+                Abbott.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Error closing NFC connection!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                return null;
+                */
+            }
+
+
+            /*val mp: MediaPlayer
+            mp = MediaPlayer.create(this@ScanActivity, R.raw.notification)
+            mp.setOnCompletionListener { mp ->
+                var mp = mp
+                // TODO Auto-generated method stub
+                mp!!.reset()
+                mp!!.release()
+                mp = null
+            }
+            mp.start()*/
+
+            val date = Date()
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")
+            val myFile = File("/sdcard/fsl_" + dateFormat.format(date) + ".log")
+            try {
+                myFile.createNewFile()
+                val fOut = FileOutputStream(myFile)
+                val myOutWriter = OutputStreamWriter(fOut)
+                myOutWriter.append(lectura)
+                myOutWriter.close()
+                fOut.close()
+            } catch (e: Exception) {
+            }
+
+
+
+            return null
+        }
+
+
+    }
+
+    private fun addText(s: String?) {
+        this@ScanActivity.runOnUiThread(java.lang.Runnable { tvResult!!.text = s })
+
+    }
+
+    private fun GetTime(minutes: Long?) {
+        val t4 = minutes!! / 1440
+        val t5 = minutes - t4 * 1440
+        val t6 = t5 / 60
+        val t7 = t5 - t6 * 60
+    }
+
+    private fun glucoseReading(`val`: Int): Float {
+        // ((0x4531 & 0xFFF) / 6) - 37;
+        val bitmask = 0x0FFF
+        return java.lang.Float.valueOf(java.lang.Float.valueOf(((`val` and bitmask) / 6).toFloat())!! - 37)!!
+    }
+}
+
+
+/*
     private var nfcAdapter: NfcAdapter? = null
     private var nfcPendingIntent: PendingIntent? = null
     private val mNdefPushMessage: NdefMessage? = null
@@ -56,258 +383,6 @@ class ScanActivity : AppCompatActivity() {
             startActivity(intent)        }
     }
 
-    private fun dumpTagData(tag: Tag?): String {
-        var tag = tag
-        val sb = StringBuilder()
-        val id = tag!!.id
-        sb.append("ID (hex): ").append(toHex(id)).append('\n')
-        sb.append("ID (reversed hex): ").append(toReversedHex(id)).append('\n')
-        sb.append("ID (dec): ").append(toDec(id)).append('\n')
-        sb.append("ID (reversed dec): ").append(toReversedDec(id)).append('\n')
-
-        val prefix = "android.nfc.tech."
-        sb.append("Technologies: ")
-        for (tech in tag.techList) {
-            sb.append(tech.substring(prefix.length))
-            sb.append(", ")
-        }
-        sb.delete(sb.length - 2, sb.length)
-        for (tech in tag!!.techList) {
-            if (tech == MifareClassic::class.java.name) {
-                sb.append('\n')
-                var type = "Unknown"
-                try {
-                    var mifareTag: MifareClassic
-                    try {
-                        mifareTag = MifareClassic.get(tag)
-                    } catch (e: Exception) {
-                        // Fix for Sony Xperia Z3/Z5 phones
-                        tag = cleanupTag(tag)
-                        mifareTag = MifareClassic.get(tag)
-                    }
-
-                    when (mifareTag.type) {
-                        MifareClassic.TYPE_CLASSIC -> type = "Classic"
-                        MifareClassic.TYPE_PLUS -> type = "Plus"
-                        MifareClassic.TYPE_PRO -> type = "Pro"
-                    }
-                    sb.append("Mifare Classic type: ")
-                    sb.append(type)
-                    sb.append('\n')
-
-                    sb.append("Mifare size: ")
-                    sb.append(mifareTag.size.toString() + " bytes")
-                    sb.append('\n')
-
-                    sb.append("Mifare sectors: ")
-                    sb.append(mifareTag.sectorCount)
-                    sb.append('\n')
-
-                    sb.append("Mifare blocks: ")
-                    sb.append(mifareTag.blockCount)
-                } catch (e: Exception) {
-                    sb.append("Mifare classic error: " + e.message)
-                }
-
-            }
-
-            if (tech == MifareUltralight::class.java.name) {
-                sb.append('\n')
-                val mifareUlTag = MifareUltralight.get(tag)
-                var type = "Unknown"
-                when (mifareUlTag.type) {
-                    MifareUltralight.TYPE_ULTRALIGHT -> type = "Ultralight"
-                    MifareUltralight.TYPE_ULTRALIGHT_C -> type = "Ultralight C"
-                }
-                sb.append("Mifare Ultralight type: ")
-                sb.append(type)
-            }
-        }
-
-        return sb.toString()
-    }
-
-    private fun cleanupTag(oTag: Tag?): Tag? {
-        if (oTag == null)
-            return null
-
-        val sTechList = oTag.techList
-
-        val oParcel = Parcel.obtain()
-        oTag.writeToParcel(oParcel, 0)
-        oParcel.setDataPosition(0)
-
-        val len = oParcel.readInt()
-        var id: ByteArray? = null
-        if (len >= 0) {
-            id = ByteArray(len)
-            oParcel.readByteArray(id)
-        }
-        val oTechList = IntArray(oParcel.readInt())
-        oParcel.readIntArray(oTechList)
-        val oTechExtras = oParcel.createTypedArray(Bundle.CREATOR)
-        val serviceHandle = oParcel.readInt()
-        val isMock = oParcel.readInt()
-        val tagService: IBinder?
-        if (isMock == 0) {
-            tagService = oParcel.readStrongBinder()
-        } else {
-            tagService = null
-        }
-        oParcel.recycle()
-
-        var nfca_idx = -1
-        var mc_idx = -1
-        var oSak: Short = 0
-        var nSak: Short = 0
-
-        for (idx in sTechList.indices) {
-            if (sTechList[idx] == NfcA::class.java.name) {
-                if (nfca_idx == -1) {
-                    nfca_idx = idx
-                    if (oTechExtras[idx] != null && oTechExtras[idx].containsKey("sak")) {
-                        oSak = oTechExtras[idx].getShort("sak")
-                        nSak = oSak
-                    }
-                } else {
-                    if (oTechExtras[idx] != null && oTechExtras[idx].containsKey("sak")) {
-                        nSak = (nSak or oTechExtras[idx].getShort("sak")).toShort()
-                    }
-                }
-            } else if (sTechList[idx] == MifareClassic::class.java.name) {
-                mc_idx = idx
-            }
-        }
-
-        var modified = false
-
-        if (oSak != nSak) {
-            oTechExtras[nfca_idx].putShort("sak", nSak)
-            modified = true
-        }
-
-        if (nfca_idx != -1 && mc_idx != -1 && oTechExtras[mc_idx] == null) {
-            oTechExtras[mc_idx] = oTechExtras[nfca_idx]
-            modified = true
-        }
-
-        if (!modified) {
-            return oTag
-        }
-
-        val nParcel = Parcel.obtain()
-        nParcel.writeInt(id!!.size)
-        nParcel.writeByteArray(id)
-        nParcel.writeInt(oTechList.size)
-        nParcel.writeIntArray(oTechList)
-        nParcel.writeTypedArray(oTechExtras, 0)
-        nParcel.writeInt(serviceHandle)
-        nParcel.writeInt(isMock)
-        if (isMock == 0) {
-            nParcel.writeStrongBinder(tagService)
-        }
-        nParcel.setDataPosition(0)
-
-        val nTag = Tag.CREATOR.createFromParcel(nParcel)
-
-        nParcel.recycle()
-
-        return nTag
-    }
-
-    private fun toHex(bytes: ByteArray): String {
-        val sb = StringBuilder()
-        for (i in bytes.indices.reversed()) {
-            //val b = bytes[i] and 0xff
-            val b = bytes[i].toInt()
-            if (b < 0x10)
-                sb.append('0')
-            sb.append(Integer.toHexString(b))
-            if (i > 0) {
-                sb.append(" ")
-            }
-        }
-        return sb.toString()
-    }
-
-    private fun toReversedHex(bytes: ByteArray): String {
-        val sb = StringBuilder()
-        for (i in bytes.indices) {
-            if (i > 0) {
-                sb.append(" ")
-            }
-            //val b = bytes[i] and 0xff
-            val b = bytes[i].toInt()
-            if (b < 0x10)
-                sb.append('0')
-            sb.append(Integer.toHexString(b))
-        }
-        return sb.toString()
-    }
-
-    private fun toDec(bytes: ByteArray): Long {
-        var result: Long = 0
-        var factor: Long = 1
-        for (i in bytes.indices) {
-            //val value = bytes[i] and 0xffL
-            val value = bytes[i].toInt()
-            result += value * factor
-            factor *= 256L
-        }
-        return result
-    }
-
-    private fun toReversedDec(bytes: ByteArray): Long {
-        var result: Long = 0
-        var factor: Long = 1
-        for (i in bytes.indices.reversed()) {
-            //val value = bytes[i] and 0xffL
-            val value = bytes[i].toInt()
-            result += value * factor
-            factor *= 256L
-        }
-        return result
-    }
-
-    fun buildTagViews(msgs: Array<NdefMessage>?) {
-        if (msgs == null || msgs.size == 0) {
-            return
-        }
-        /*val inflater = LayoutInflater.from(this)
-        val content = mTagContent
-
-        // Parse the first message in the list
-        // Build views for all of the sub records
-        val now = Date()
-        val records = NdefMessageParser.parse(msgs[0])
-        val size = records.size
-        for (i in 0 until size) {
-            val timeView = TextView(this)
-            timeView.setText(TIME_FORMAT.format(now))
-            content.addView(timeView, 0)
-            val record = records.get(i)
-            content.addView(record.getView(this, inflater, content, i), 1 + i)
-            content.addView(inflater.inflate(R.layout.tag_divider, content, false), 2 + i)
-        }*/
-    }
-
-    private fun newTextRecord(text: String, locale: Locale, encodeInUtf8: Boolean): NdefRecord {
-        val langBytes = locale.language.toByteArray()
-        //val langBytes = locale.getLanguage().getBytes(Charset.forName("US-ASCII"))
-        val utfEncoding = if (encodeInUtf8) Charset.forName("UTF-8") else Charset.forName("UTF-16")
-        //val textBytes = text.getBytes(utfEncoding)
-        val textBytes = text.toByteArray()
-        val utfBit = if (encodeInUtf8) 0 else 1 shl 7
-        val status = (utfBit + langBytes.size).toChar()
-        val x = langBytes.size + textBytes.size + 1
-        var data = ByteArray(1 + langBytes.size + textBytes.size)
-        data[0] = status.toByte()
-        System.arraycopy(langBytes, 0, data, 1, langBytes.size)
-        System.arraycopy(textBytes, 0, data, 1 + langBytes.size, textBytes.size)
-        data = ByteArray(0)
-        return NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, ByteArray(0), data)
-    }
-
     override fun onResume() {
         super.onResume()
         nfcAdapter?.enableForegroundDispatch(this, nfcPendingIntent, null, null)
@@ -325,40 +400,34 @@ class ScanActivity : AppCompatActivity() {
         }
     }
 
-    /*private fun resolveIntent(intent: Intent) {
-        val action = intent.action
-        if (NfcAdapter.ACTION_TAG_DISCOVERED == action
-                || NfcAdapter.ACTION_TECH_DISCOVERED == action
-                || NfcAdapter.ACTION_NDEF_DISCOVERED == action) {
-            val rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
-            val msgs: Array<NdefMessage>
-            if (rawMsgs != null) {
-                msgs = arrayOfNulls(rawMsgs.size)
-                for (i in rawMsgs.indices) {
-                    msgs[i] = rawMsgs[i] as NdefMessage
-                }
-            } else {
-                // Unknown tag type
-                val empty = ByteArray(0)
-                val id = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID)
-                val tag = intent.getParcelableExtra<Parcelable>(NfcAdapter.EXTRA_TAG) as Tag
-                val payload = dumpTagData(tag).getBytes()
-                val record = NdefRecord(NdefRecord.TNF_UNKNOWN, empty, id, payload)
-                val msg = NdefMessage(arrayOf(record))
-                msgs = arrayOf(msg)
-                mTags.add(tag)
-            }
-            // Setup the views
-            buildTagViews(msgs)
-        }
-    }*/
-
-
     private fun processIntent(checkIntent: Intent) {
         val action = checkIntent.action
         Log.i("process intent", "runs")
-        if (NfcAdapter.ACTION_TAG_DISCOVERED == action) {
+        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
             Log.i("action", action)
+            //var rawMessages = intent.getParcelableArrayExtra(NfcAdapter.ACTION_TAG_DISCOVERED)
+            //var rawMessages = checkIntent.getParcelableArrayExtra(NfcAdapter.EXTRA_TAG)
+            val rawMessages = NfcV.get(checkIntent.getParcelableExtra(NfcAdapter.EXTRA_TAG))
+            val msgs = rawMessages.responseFlags
+            val msgs2 = rawMessages.tag
+            val techlist = msgs2.techList
+            val msgs3 = rawMessages.maxTransceiveLength
+            val msgs4 = rawMessages.dsfId
+            Log.i("intent", rawMessages.toString())
+            Log.i("flags", msgs.toString())
+            Log.i("tag", msgs2.toString())
+            Log.i("length", msgs3.toString())
+            Log.i("list", techlist.size.toString())
+            for (i in techlist) {
+                Log.i("i", i.toString())
+            }
+            Log.i("id", msgs4.toString())
+            //Log.i("raw", rawMessages.size.toString())
+            //var rawMessages = NfcV.get(intent.getParcelableExtra(NfcAdapter.EXTRA_NDEF_MESSAGES))
+            /*if (rawMessages != null) {
+                var msgs = arrayOfNulls<NdefMessage?>(rawMessages.size)
+                Log.i("works", rawMessages.size.toString())
+            }*/
         }
         /*if (/*checkIntent.action == NfcAdapter.ACTION_NDEF_DISCOVERED || */checkIntent.action == NfcAdapter.ACTION_TAG_DISCOVERED/* || checkIntent.action == NfcAdapter.ACTION_TECH_DISCOVERED*/) {
             Log.i("new ndef intent", checkIntent.toString())
@@ -414,22 +483,3 @@ class ScanActivity : AppCompatActivity() {
                 //processNdefMessages(messages)
             }
         }*/
-    }
-
-    private fun processNdefMessages(ndefMessages: Array<NdefMessage?>) {
-        for (curMsg in ndefMessages) {
-            if (curMsg != null) {
-                //Log.i("msg", curMsg.toString())
-                Log.i("msgsize", curMsg.records.size.toString())
-                for (curRecord in curMsg.records) {
-                    if (curRecord.toUri() != null) {
-                        Log.i("recorduri", curRecord.toUri().toString())
-                    }
-                    else {
-                        Log.i("recordcontent", curRecord.payload.contentToString())
-                    }
-                }
-            }
-        }
-    }
-}

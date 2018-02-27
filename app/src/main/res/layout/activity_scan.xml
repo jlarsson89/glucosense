@@ -20,7 +20,10 @@
             android:visibility="visible"
             tools:layout_gravity="center_vertical"
             tools:layout_height="wrap_content">
-
+            <TextView
+                android:id="@+id/result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <Button
                 android:id="@+id/backButton"
                 android:layout_width="match_parent"
