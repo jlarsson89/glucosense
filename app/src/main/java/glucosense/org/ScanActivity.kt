@@ -73,6 +73,7 @@ class ScanActivity : AppCompatActivity() {
             Log.i("tag", msgs2.toString())
             Log.i("length", msgs3.toString())
             Log.i("list", techlist.size.toString())
+            rawMessages.connect()
             for (i in techlist.indices) {
                 Log.i("i", i.toString())
             }
