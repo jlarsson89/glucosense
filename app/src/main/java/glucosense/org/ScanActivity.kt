@@ -63,27 +63,31 @@ class ScanActivity : AppCompatActivity() {
             //var rawMessages = intent.getParcelableArrayExtra(NfcAdapter.ACTION_TAG_DISCOVERED)
             //var rawMessages = checkIntent.getParcelableArrayExtra(NfcAdapter.EXTRA_TAG)
             val rawMessages = NfcV.get(checkIntent.getParcelableExtra(NfcAdapter.EXTRA_TAG))
-            val msgs = rawMessages.responseFlags
-            val msgs2 = rawMessages.tag
-            val techlist = msgs2.techList
-            val msgs3 = rawMessages.maxTransceiveLength
-            val msgs4 = rawMessages.dsfId
-            Log.i("intent", rawMessages.toString())
-            Log.i("flags", msgs.toString())
-            Log.i("tag", msgs2.toString())
-            Log.i("length", msgs3.toString())
-            Log.i("list", techlist.size.toString())
             rawMessages.connect()
-            for (i in techlist.indices) {
-                Log.i("i", i.toString())
+            if (rawMessages.isConnected) {
+                Log.i("connected", rawMessages.isConnected.toString())
+                val msgs = rawMessages.responseFlags
+                val msgs2 = rawMessages.tag
+                val techlist = msgs2.techList
+                val msgs3 = rawMessages.maxTransceiveLength
+                val msgs4 = rawMessages.dsfId
+                Log.i("intent", rawMessages.toString())
+                Log.i("flags", msgs.toString())
+                Log.i("tag", msgs2.toString())
+                Log.i("length", msgs3.toString())
+                Log.i("list", techlist.size.toString())
+                for (i in techlist.indices) {
+                    Log.i("i", i.toString())
+                }
+                Log.i("id", msgs4.toString())
+                //Log.i("raw", rawMessages.size.toString())
+                //var rawMessages = NfcV.get(intent.getParcelableExtra(NfcAdapter.EXTRA_NDEF_MESSAGES))
+                /*if (rawMessages != null) {
+                    var msgs = arrayOfNulls<NdefMessage?>(rawMessages.size)
+                    Log.i("works", rawMessages.size.toString())
+                }*/
             }
-            Log.i("id", msgs4.toString())
-            //Log.i("raw", rawMessages.size.toString())
-            //var rawMessages = NfcV.get(intent.getParcelableExtra(NfcAdapter.EXTRA_NDEF_MESSAGES))
-            /*if (rawMessages != null) {
-                var msgs = arrayOfNulls<NdefMessage?>(rawMessages.size)
-                Log.i("works", rawMessages.size.toString())
-            }*/
+            rawMessages.close()
         }
     }
 }
