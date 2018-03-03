@@ -67,19 +67,21 @@ class ScanActivity : AppCompatActivity() {
             if (rawMessages.isConnected) {
                 Log.i("connected", rawMessages.isConnected.toString())
                 val msgs = rawMessages.responseFlags
-                val msgs2 = rawMessages.tag
-                val techlist = msgs2.techList
-                val msgs3 = rawMessages.maxTransceiveLength
-                val msgs4 = rawMessages.dsfId
+                val tag = rawMessages.tag
+                val techlist = tag.techList
+                val maxlength = rawMessages.maxTransceiveLength
+                val dsfid = rawMessages.dsfId
                 Log.i("intent", rawMessages.toString())
+                Log.i("id", dsfid.toString())
                 Log.i("flags", msgs.toString())
-                Log.i("tag", msgs2.toString())
-                Log.i("length", msgs3.toString())
+                Log.i("tag", tag.toString())
+                Log.i("length", maxlength.toString())
                 Log.i("list", techlist.size.toString())
                 for (i in techlist.indices) {
                     Log.i("i", i.toString())
+                    val x = techlist.get(i).toString()
+                    Log.i("x", x)
                 }
-                Log.i("id", msgs4.toString())
                 //Log.i("raw", rawMessages.size.toString())
                 //var rawMessages = NfcV.get(intent.getParcelableExtra(NfcAdapter.EXTRA_NDEF_MESSAGES))
                 /*if (rawMessages != null) {
