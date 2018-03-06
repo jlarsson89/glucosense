@@ -63,8 +63,8 @@ class InjectionActivity : AppCompatActivity() {
                     true).show()
         }
         saveButton.setOnClickListener {
-            var type = injectionTypeInput.text.toString()
-            var units = injectionUnitsInput.text.toString()
+            val type = injectionTypeInput.text.toString()
+            val units = injectionUnitsInput.text.toString()
             var datetime = ""
             if (date != null && time != null) {
                 datetime = date + " " + time
@@ -86,10 +86,13 @@ class InjectionActivity : AppCompatActivity() {
             Log.i("path", path)
             val gson = Gson()
             val injection = Injection(datetime, type, units)
-            var towrite: String = gson.toJson(injection)
+            val towrite: String = gson.toJson(injection)
             val file = File(path)
             Log.i("file", file.toString())
-            file.writeText(towrite)
+            file.appendText(towrite)
+            //file.writeText(towrite)
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
         cancelButton.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)

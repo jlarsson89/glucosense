@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,6 +16,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        button.setOnClickListener{
+            val path = filesDir.absolutePath+"/injections.json"
+            val file = File(path)
+            file.delete()
+
+        }
         addButton.setOnClickListener {
             Log.i("pressed", "add")
             val intent = Intent(this, AddActivity::class.java)
