@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.google.gson.Gson
+import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_injection.*
 import java.io.File
 import java.util.*
@@ -30,6 +31,7 @@ class InjectionActivity : AppCompatActivity() {
     var units: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Realm.init(this)
         setContentView(R.layout.activity_injection)
         val editDate = findViewById<View>(R.id.datePicker)
         val editTime = findViewById<View>(R.id.timePicker)
