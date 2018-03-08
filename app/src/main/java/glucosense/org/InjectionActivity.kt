@@ -29,6 +29,7 @@ class InjectionActivity : AppCompatActivity() {
     var datetime: String? = null
     var type: String? = null
     var units: String? = null
+    val validUnits: String = "^(\\d[0-9]{1,3})$"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Realm.init(this)
@@ -77,7 +78,7 @@ class InjectionActivity : AppCompatActivity() {
             if (type != null) {
                 Log.i("save", type)
             }
-            if (units != null) {
+            if (units != null && units.matches(validUnits.toRegex())) {
                 Log.i("save", units)
             }
             else {

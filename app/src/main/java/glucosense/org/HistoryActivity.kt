@@ -26,9 +26,9 @@ class HistoryActivity : AppCompatActivity() {
             Log.i("type", injection.type)
             Log.i("units", injection.units)
         }
-        //bufferedReader = File(filesDir.absolutePath+"/meals.json").bufferedReader()
-        //inputString = bufferedReader.use { it.readText()}
-        //val meals = gson.fromJson(inputString, MealActivity.Meal::class.java)
+        bufferedReader = File(filesDir.absolutePath+"/meals.json").bufferedReader()
+        inputString = bufferedReader.use { it.readText()}
+        val meals = gson.fromJson(inputString, MealActivity.Meal::class.java)
         backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
