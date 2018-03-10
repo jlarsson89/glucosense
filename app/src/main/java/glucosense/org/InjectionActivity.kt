@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import com.google.gson.Gson
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.activity_injection.*
 import java.io.File
 import java.util.*
@@ -32,8 +33,10 @@ class InjectionActivity : AppCompatActivity() {
     val validUnits: String = "^(\\d[0-9]{1,3})$"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Realm.init(this)
         setContentView(R.layout.activity_injection)
+        Realm.init(applicationContext)
+        var realm = Realm.getDefaultInstance()
+        var injectionModel = InjectionModel()
         val editDate = findViewById<View>(R.id.datePicker)
         val editTime = findViewById<View>(R.id.timePicker)
         val cal = Calendar.getInstance()
