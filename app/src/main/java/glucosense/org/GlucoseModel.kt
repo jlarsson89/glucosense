@@ -6,7 +6,7 @@ import io.realm.Realm
  * Created by johan on 10/03/18.
  */
 class GlucoseModel : GlucoseInterface {
-    override fun addGlucose(realm: Realm, injection: Injection): Boolean {
+    override fun addGlucose(realm: Realm, glucose: Glucose): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -14,7 +14,7 @@ class GlucoseModel : GlucoseInterface {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun editGlucose(realm: Realm, injection: Injection): Boolean {
+    override fun editGlucose(realm: Realm, glucose: Glucose): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
