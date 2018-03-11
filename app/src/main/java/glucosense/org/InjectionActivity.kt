@@ -30,10 +30,11 @@ class InjectionActivity : AppCompatActivity() {
     var datetime: String? = null
     var type: String? = null
     var units: String? = null
-    val validUnits: String = "^(\\d[0-9]{1,3})$"
+    val validUnits: String = "^(\\d[0-9]{0,2})$"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_injection)
+        RealmConfiguration.Builder().deleteRealmIfMigrationNeeded()
         Realm.init(applicationContext)
         var realm = Realm.getDefaultInstance()
         var injectionModel = InjectionModel()
@@ -74,31 +75,31 @@ class InjectionActivity : AppCompatActivity() {
             var datetime = ""
             if (date != null && time != null) {
                 datetime = date + " " + time
-            }
-            if (datetime != null) {
-                Log.i("save", datetime)
-            }
-            if (type != null) {
-                Log.i("save", type)
-            }
-            if (units != null && units.matches(validUnits.toRegex())) {
-                Log.i("save", units)
+                if (datetime != null) {
+                    Log.i("save", datetime)
+                    if (type != null) {
+                        Log.i("save", type)
+                        if (units != null && units.matches(validUnits.toRegex())) {
+                            Log.i("save", units)
+                            Log.i("values", datetime + "\t" + type + "\t" + units)
+                            val path = filesDir.absolutePath+"/injections.json"
+                            Log.i("path", path)
+                            val gson = Gson()
+                            val injection = Injection(datetime, type, units)
+                            val towrite: String = gson.toJson(injection)
+                            val file = File(path)
+                            Log.i("file", file.toString())
+                            file.appendText(towrite)
+                            //file.writeText(towrite)
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                }
             }
             else {
                 Log.i("save", "fill in form")
             }
-            Log.i("values", datetime + "\t" + type + "\t" + units)
-            val path = filesDir.absolutePath+"/injections.json"
-            Log.i("path", path)
-            val gson = Gson()
-            val injection = Injection(datetime, type, units)
-            val towrite: String = gson.toJson(injection)
-            val file = File(path)
-            Log.i("file", file.toString())
-            file.appendText(towrite)
-            //file.writeText(towrite)
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
         }
         cancelButton.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)

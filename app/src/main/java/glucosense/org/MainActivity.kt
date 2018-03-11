@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import io.realm.Realm
+import io.realm.RealmConfiguration
 
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
@@ -16,6 +18,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        Realm.init(applicationContext)
+        val c = RealmConfiguration.Builder()
+        c.name("glucosense")
+        c.deleteRealmIfMigrationNeeded()
+        Realm.setDefaultConfiguration(c.build())
         button.setOnClickListener{
             val path = filesDir.absolutePath+"/injections.json"
             val file = File(path)
