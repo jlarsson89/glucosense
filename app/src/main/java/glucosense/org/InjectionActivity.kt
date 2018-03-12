@@ -91,6 +91,12 @@ class InjectionActivity : AppCompatActivity() {
                             Log.i("file", file.toString())
                             file.appendText(towrite)
                             //file.writeText(towrite)
+                            val inj = glucosense.org.Injection(
+                                    _ID = datetime,
+                                    type = type,
+                                    units = units
+                            )
+                            injectionModel.addInjection(realm, inj)
                             val intent = Intent(this, MainActivity::class.java)
                             startActivity(intent)
                         }
