@@ -23,12 +23,6 @@ class MainActivity : AppCompatActivity() {
         c.name("glucosense")
         c.deleteRealmIfMigrationNeeded()
         Realm.setDefaultConfiguration(c.build())
-        button.setOnClickListener{
-            val path = filesDir.absolutePath+"/injections.json"
-            val file = File(path)
-            file.delete()
-
-        }
         addButton.setOnClickListener {
             Log.i("pressed", "add")
             val intent = Intent(this, AddActivity::class.java)

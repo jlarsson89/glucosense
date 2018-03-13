@@ -7,37 +7,23 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.google.gson.Gson
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.activity_injection.*
-import java.io.File
 import java.util.*
 
 class InjectionActivity : AppCompatActivity() {
-    class Injection {
-        var datetime: String? = null
-        var type: String? = null
-        var units: String? = null
-        constructor(datetime: String, type: String, units: String) {
-            this.datetime = datetime
-            this.type = type
-            this.units = units
-        }
-    }
-    var date: String? = null
-    var time: String? = null
-    var datetime: String? = null
-    var type: String? = null
-    var units: String? = null
-    val validUnits: String = "^(\\d[0-9]{0,2})$"
+    private var date: String? = null
+    private var time: String? = null
+    private val validUnits: String = "^(\\d[0-9]{0,2})$"
+    private val validDatetime: String = "([12]\\d{3}-(0?[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])) ([0-9]|0?[0-9]|1[0-9]|2[0-3]):[0-5]?[0-9]\$"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_injection)
         RealmConfiguration.Builder().deleteRealmIfMigrationNeeded()
         Realm.init(applicationContext)
-        var realm = Realm.getDefaultInstance()
-        var injectionModel = InjectionModel()
+        val realm = Realm.getDefaultInstance()
+        val injectionModel = InjectionModel()
         val editDate = findViewById<View>(R.id.datePicker)
         val editTime = findViewById<View>(R.id.timePicker)
         val cal = Calendar.getInstance()
@@ -45,9 +31,7 @@ class InjectionActivity : AppCompatActivity() {
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, month)
             cal.set(Calendar.DAY_OF_MONTH, day)
-            Log.i("date", year.toString() + "-" + month + "-" + day)
             date = year.toString() + "-" + (month+1).toString() + "-" + day.toString()
-            Log.i("verify", date)
         }
         editDate.setOnClickListener {
             DatePickerDialog(this@InjectionActivity, dateSetListener,
@@ -58,10 +42,7 @@ class InjectionActivity : AppCompatActivity() {
         val timeSetListener = TimePickerDialog.OnTimeSetListener { view, hour, minute ->
             cal.set(Calendar.HOUR_OF_DAY, hour)
             cal.set(Calendar.MINUTE, minute)
-            val format = "HH:MM"
-            Log.i("time", hour.toString() + ":" + minute)
             time = hour.toString() + ":" + minute.toString()
-            Log.i("verify", time)
         }
         editTime.setOnClickListener {
             TimePickerDialog(this@InjectionActivity, timeSetListener,
@@ -72,39 +53,16 @@ class InjectionActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
             val type = injectionTypeInput.text.toString()
             val units = injectionUnitsInput.text.toString()
-            var datetime = ""
-            if (date != null && time != null) {
-                datetime = date + " " + time
-                if (datetime != null) {
-                    Log.i("save", datetime)
-                    if (type != null) {
-                        Log.i("save", type)
-                        if (units != null && units.matches(validUnits.toRegex())) {
-                            Log.i("save", units)
-                            Log.i("values", datetime + "\t" + type + "\t" + units)
-                            val path = filesDir.absolutePath+"/injections.json"
-                            Log.i("path", path)
-                            val gson = Gson()
-                            val injection = Injection(datetime, type, units)
-                            val towrite: String = gson.toJson(injection)
-                            val file = File(path)
-                            Log.i("file", file.toString())
-                            file.appendText(towrite)
-                            //file.writeText(towrite)
-                            val inj = glucosense.org.Injection(
-                                    _ID = datetime,
-                                    type = type,
-                                    units = units
-                            )
-                            injectionModel.addInjection(realm, inj)
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
-                        }
-                    }
-                }
-            }
-            else {
-                Log.i("save", "fill in form")
+            val datetime = date + " " + time
+            if (type.isNotEmpty() && units.isNotEmpty() && units.matches(validUnits.toRegex()) && datetime.matches(validDatetime.toRegex())) {
+                val inj = glucosense.org.Injection(
+                        _ID = datetime,
+                        type = type,
+                        units = units
+                )
+                injectionModel.addInjection(realm, inj)
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             }
         }
         cancelButton.setOnClickListener {
