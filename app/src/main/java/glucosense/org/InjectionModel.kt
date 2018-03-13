@@ -2,6 +2,7 @@ package glucosense.org
 
 import android.util.Log
 import io.realm.Realm
+import io.realm.RealmResults
 
 class InjectionModel : InjectionInterface {
     override fun addInjection(realm: Realm, injection: Injection): Boolean {
@@ -27,5 +28,9 @@ class InjectionModel : InjectionInterface {
 
     override fun getInjection(realm: Realm, _ID: String): Injection {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getInjections(realm: Realm): RealmResults<Injection> {
+        return realm.where(Injection::class.java).findAll()
     }
 }
