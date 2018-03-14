@@ -3,9 +3,6 @@ package glucosense.org
 import io.realm.Realm
 import io.realm.RealmResults
 
-/**
- * Created by johan on 10/03/18.
- */
 interface InjectionInterface {
     fun addInjection(realm: Realm, injection: Injection): Boolean
     fun delInjection(realm: Realm, _ID: String): Boolean

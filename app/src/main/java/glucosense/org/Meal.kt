@@ -1,17 +1,16 @@
 package glucosense.org
 
+import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
-open class Injection(
+open class Meal(
         @PrimaryKey open var _ID: String = "",
-        open var type: String = "",
-        open var units: String = ""
+        open var ingredients: RealmList<Ingredient> = RealmList()
 )
     : RealmObject() {
     fun copy(
             _ID: String = this._ID,
-            type: String = this.type,
-            units: String = this.units
-    ) = Injection(_ID, type, units)
+            ingredients: RealmList<Ingredient> = this.ingredients
+    ) = Meal(_ID, ingredients)
 }

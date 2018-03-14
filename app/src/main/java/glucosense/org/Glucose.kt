@@ -14,5 +14,5 @@ open class Glucose(
     fun copy(
             _ID: String = this._ID,
             value: String = this.value
-    ) = Injection(_ID, value)
+    ) = Glucose(_ID, value)
 }
