@@ -13,15 +13,21 @@ import java.io.File
 
 class HistoryActivity : AppCompatActivity() {
     var injectionModel = InjectionModel()
+    var mealModel = MealModel()
     var realm = Realm.getDefaultInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
         injectionModel = InjectionModel()
-        var results = injectionModel.getInjections(realm)
-        results.forEach { result ->
+        val injResults = injectionModel.getInjections(realm)
+        injResults.forEach { result ->
             Log.i("result", result._ID + " " + result.type + " " + result.units)
         }
+        mealModel = MealModel()
+        /*var mealResults = mealModel.getMeals(realm)
+        mealResults.forEach { result ->
+            Log.i("result", result._ID)
+        }*/
         backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

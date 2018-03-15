@@ -10,12 +10,15 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import com.google.gson.Gson
+import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_meal.*
 import java.io.File
 import java.util.*
 
 class MealActivity : AppCompatActivity() {
-
+    var mealModel = MealModel()
+    var ingredientModel = IngredientModel()
+    var realm = Realm.getDefaultInstance()
     class Meal {
         var datetime: String? = null
         var ingredients: Pair<String, String>? = null
