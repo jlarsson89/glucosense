@@ -19,9 +19,11 @@ class HistoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
         injectionModel = InjectionModel()
-        val injResults = injectionModel.getInjections(realm)
+        val injResults = injectionModel.getInjections(realm).asReversed()
         injResults.forEach { result ->
-            Log.i("result", result._ID + " " + result.type + " " + result.units)
+            val label = TextView(this)
+            label.setText(result._ID + " " + result.type + " " + result.units)
+            injectionsList.addView(label)
         }
         mealModel = MealModel()
         /*var mealResults = mealModel.getMeals(realm)
