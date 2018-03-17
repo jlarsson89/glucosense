@@ -3,8 +3,6 @@ package glucosense.org
 import android.util.Log
 import io.realm.Realm
 import io.realm.RealmResults
-import io.realm.kotlin.delete
-import io.realm.kotlin.where
 
 class InjectionModel : InjectionInterface {
     override fun addInjection(realm: Realm, injection: Injection): Boolean {
