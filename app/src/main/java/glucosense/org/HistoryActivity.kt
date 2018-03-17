@@ -3,6 +3,7 @@ package glucosense.org
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcel
 import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
@@ -44,6 +45,7 @@ class HistoryActivity : AppCompatActivity() {
                 editButton.setOnClickListener {
                     val intent = Intent(this, EditInjection::class.java)
                     intent.putExtra("", result._ID)
+                    //Log.i("intent", intent.toString())
                     startActivity(intent)
                 }
             }

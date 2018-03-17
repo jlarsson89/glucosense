@@ -37,8 +37,8 @@ class InjectionModel : InjectionInterface {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getInjection(realm: Realm, _ID: String): Injection {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getInjection(realm: Realm, _ID: String): Injection? {
+        return realm.where(Injection::class.java).equalTo("_ID", _ID).findFirst()
     }
 
     override fun getInjections(realm: Realm): RealmResults<Injection> {
