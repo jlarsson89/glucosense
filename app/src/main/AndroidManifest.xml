@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="glucosense.org">
+
     <uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,14 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ScanActivity">
+        <activity android:name=".ScanActivity">
             <intent-filter>
                 <action android:name="android.intent.action.NDEF_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:scheme="vnd.android.nfc" />
+
+                <data android:scheme="vnd.android.nfc" />
             </intent-filter>
         </activity>
         <activity
@@ -44,6 +49,10 @@
         <activity android:name=".StatisticsActivity" />
         <activity android:name=".HistoryActivity" />
         <activity android:name=".AboutActivity" />
+        <activity
+            android:name=".EditInjection"
+            android:label="@string/title_activity_edit_injection"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

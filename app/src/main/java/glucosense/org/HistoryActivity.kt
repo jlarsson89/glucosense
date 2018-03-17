@@ -14,8 +14,8 @@ import java.io.BufferedReader
 import java.io.File
 
 class HistoryActivity : AppCompatActivity() {
-    var injectionModel = InjectionModel()
-    var mealModel = MealModel()
+    private var injectionModel = InjectionModel()
+    private var mealModel = MealModel()
     var realm = Realm.getDefaultInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,15 +24,26 @@ class HistoryActivity : AppCompatActivity() {
         val injResults = injectionModel.getInjections(realm).sort("_ID").asReversed()
         if (injResults.isNotEmpty()) {
             injResults.forEach { result ->
+                val layout = LinearLayout(this)
+                layout.orientation = LinearLayout.HORIZONTAL
                 val delButton = Button(this)
                 delButton.text = "Delete"
+                val editButton = Button(this)
+                editButton.text = "Edit"
                 val label = TextView(this)
                 label.setText(result._ID + " " + result.type + " " + result.units)
-                injectionsList.addView(delButton)
-                injectionsList.addView(label)
+                layout.addView(delButton)
+                layout.addView(editButton)
+                layout.addView(label)
+                injectionsList.addView(layout)
                 delButton.setOnClickListener {
                     injectionModel.delInjection(realm, result._ID)
                     val intent = Intent(this, HistoryActivity::class.java)
+                    startActivity(intent)
+                }
+                editButton.setOnClickListener {
+                    val intent = Intent(this, EditInjection::class.java)
+                    intent.putExtra("", result._ID)
                     startActivity(intent)
                 }
             }
