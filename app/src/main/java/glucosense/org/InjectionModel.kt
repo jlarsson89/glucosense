@@ -32,7 +32,16 @@ class InjectionModel : InjectionInterface {
     }
 
     override fun editInjection(realm: Realm, injection: Injection): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        try {
+            realm.beginTransaction()
+            realm.insertOrUpdate(injection)
+            realm.commitTransaction()
+            return true
+        }
+        catch (e: Exception) {
+            Log.i("exception", e.toString())
+            return false
+        }
     }
 
     override fun getInjection(realm: Realm, _ID: String): Injection? {

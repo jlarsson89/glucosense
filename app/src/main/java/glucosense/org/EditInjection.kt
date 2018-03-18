@@ -11,20 +11,33 @@ import kotlinx.android.synthetic.main.activity_edit_injection.*
 class EditInjection : AppCompatActivity() {
     private var injectionModel = InjectionModel()
     var realm = Realm.getDefaultInstance()
+    private var id: String = ""
+    private var type: String = ""
+    private var units: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_injection)
         injectionModel = InjectionModel()
         setSupportActionBar(toolbar)
         val input = intent.extras.get("")
-        var inj = injectionModel.getInjection(realm, input.toString())
+        val inj = injectionModel.getInjection(realm, input.toString())
+        id = intent.extras.get("").toString()
         typeInput.hint = inj?.type
         unitsInput.hint = inj?.units
         Log.i("time", inj?._ID)
         Log.i("type", inj?.type)
         Log.i("units", inj?.units)
         editButton.setOnClickListener{
-
+            type = typeInput.text.toString()
+            units = unitsInput.text.toString()
+            val newInj = glucosense.org.Injection(
+                    _ID = id,
+                    type = type,
+                    units = units
+            )
+            injectionModel.editInjection(realm, newInj)
+            val intent = Intent(this, HistoryActivity::class.java)
+            startActivity(intent)
         }
         cancelButton.setOnClickListener {
             val intent = Intent(this, HistoryActivity::class.java)
