@@ -9,33 +9,25 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
-import com.google.gson.Gson
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.activity_meal.*
-import java.io.File
 import java.util.*
 
 class MealActivity : AppCompatActivity() {
     var mealModel = MealModel()
-    var ingredientModel = IngredientModel()
     var realm = Realm.getDefaultInstance()
-    class Meal {
-        var datetime: String? = null
-        var ingredients: Pair<String, String>? = null
-        constructor(datetime: String, ingredient: Pair<String, String>) {
-            this.datetime = datetime
-            this.ingredients = ingredient
-        }
-    }
     var date: String? = null
     var time: String? = null
-    var datetime: String? = null
-    var ingredient1_name: String? = null
-    var ingredient1_qty: String? = null
+    private val validDatetime: String = "([12]\\d{3}-(0?[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])) ([0-9]|0?[0-9]|1[0-9]|2[0-3]):[0-5]?[0-9]\$"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meal)
+        RealmConfiguration.Builder().deleteRealmIfMigrationNeeded()
+        Realm.init(applicationContext)
+        val realm = Realm.getDefaultInstance()
+        mealModel = MealModel()
         val ing1Name = findViewById<EditText>(R.id.ingredient1Name)
         val ing1Qty = findViewById<EditText>(R.id.ingredient1Qty)
         val ing2Row = findViewById<LinearLayout>(R.id.ingredient2Row)
@@ -43,8 +35,6 @@ class MealActivity : AppCompatActivity() {
             if (ing1Name.text.toString().isNotEmpty() && ing1Qty.text.toString().isNotEmpty()) {
                 ing2Row.visibility = View.VISIBLE
             }
-        }
-        saveButton.setOnClickListener {
         }
         backButton.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)
@@ -81,34 +71,15 @@ class MealActivity : AppCompatActivity() {
                     cal.get(Calendar.MINUTE),
                     true).show()
         }
-        /*saveButton.setOnClickListener {
-            var type = injectionTypeInput.text.toString()
-            var units = injectionUnitsInput.text.toString()
-            var datetime = ""
-            if (date != null && time != null) {
-                datetime = date + " " + time
+        saveButton.setOnClickListener {
+            val datetime = date + " " + time
+            if (datetime.matches(validDatetime.toRegex())) {
+                val meal = glucosense.org.Meal(
+                        _ID = datetime
+                )
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             }
-            if (datetime != null) {
-                Log.i("save", datetime)
-            }
-            if (type != null) {
-                Log.i("save", type)
-            }
-            if (units != null) {
-                Log.i("save", units)
-            }
-            else {
-                Log.i("save", "fill in form")
-            }
-            Log.i("values", datetime + "\t" + type + "\t" + units)
-            val path = filesDir.absolutePath+"/meals.json"
-            Log.i("path", path)
-            val gson = Gson()
-            val injection = Meal(datetime, ingredients)
-            var towrite: String = gson.toJson(injection)
-            val file = File(path)
-            Log.i("file", file.toString())
-            file.writeText(towrite)
-        }*/
+        }
     }
 }
