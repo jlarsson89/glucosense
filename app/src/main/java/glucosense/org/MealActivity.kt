@@ -77,6 +77,7 @@ class MealActivity : AppCompatActivity() {
                 val meal = glucosense.org.Meal(
                         _ID = datetime
                 )
+                mealModel.addMeal(realm, meal)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }

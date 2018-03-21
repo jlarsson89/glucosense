@@ -38,6 +38,6 @@ class MealModel : MealInterface {
     }
 
     override fun getMeals(realm: Realm): RealmResults<Meal> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return realm.where(Meal::class.java).findAll()
     }
 }

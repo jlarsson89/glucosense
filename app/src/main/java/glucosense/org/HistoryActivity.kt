@@ -46,10 +46,33 @@ class HistoryActivity : AppCompatActivity() {
             }
         }
         mealModel = MealModel()
-        /*var mealResults = mealModel.getMeals(realm)
-        mealResults.forEach { result ->
-            Log.i("result", result._ID)
-        }*/
+        val mealResults = mealModel.getMeals(realm)
+        if (mealResults.isNotEmpty()) {
+            mealResults.forEach { result ->
+                val layout = LinearLayout(this)
+                layout.orientation = LinearLayout.HORIZONTAL
+                val delButton = Button(this)
+                delButton.text = "Delete"
+                val editButton = Button(this)
+                editButton.text = "Edit"
+                val label = TextView(this)
+                label.setText(result._ID)
+                layout.addView(delButton)
+                layout.addView(editButton)
+                layout.addView(label)
+                mealList.addView(layout)
+                delButton.setOnClickListener {
+                    mealModel.delMeal(realm, result._ID)
+                    val intent = Intent(this, HistoryActivity::class.java)
+                    startActivity(intent)
+                }
+                editButton.setOnClickListener {
+                    val intent = Intent(this, EditInjection::class.java)
+                    intent.putExtra("", result._ID)
+                    startActivity(intent)
+                }
+            }
+        }
         backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
