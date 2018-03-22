@@ -15,7 +15,8 @@ class MealModel : MealInterface {
         catch (e: Exception) {
             Log.i("exception", e.toString())
             return false
-        }    }
+        }
+    }
 
     override fun delMeal(realm: Realm, _ID: String): Boolean {
         try {
@@ -33,8 +34,8 @@ class MealModel : MealInterface {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getMeal(realm: Realm, _ID: String): Meal {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getMeal(realm: Realm, _ID: String): Meal? {
+        return realm.where(Meal::class.java).equalTo("_ID", _ID).findFirst()
     }
 
     override fun getMeals(realm: Realm): RealmResults<Meal> {
