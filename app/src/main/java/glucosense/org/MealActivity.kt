@@ -16,6 +16,7 @@ import java.util.*
 
 class MealActivity : AppCompatActivity() {
     var mealModel = MealModel()
+    var ingredientModel = IngredientModel()
     var realm = Realm.getDefaultInstance()
     var date: String? = null
     var time: String? = null
@@ -28,6 +29,7 @@ class MealActivity : AppCompatActivity() {
         Realm.init(applicationContext)
         val realm = Realm.getDefaultInstance()
         mealModel = MealModel()
+        ingredientModel = IngredientModel()
         val ing1Name = findViewById<EditText>(R.id.ingredient1Name)
         val ing1Qty = findViewById<EditText>(R.id.ingredient1Qty)
         val ing2Row = findViewById<LinearLayout>(R.id.ingredient2Row)
@@ -47,9 +49,7 @@ class MealActivity : AppCompatActivity() {
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, month)
             cal.set(Calendar.DAY_OF_MONTH, day)
-            Log.i("date", year.toString() + "-" + month + "-" + day)
             date = year.toString() + "-" + (month+1).toString() + "-" + day.toString()
-            Log.i("verify", date)
         }
         editDate.setOnClickListener {
             DatePickerDialog(this@MealActivity, dateSetListener,
@@ -60,10 +60,7 @@ class MealActivity : AppCompatActivity() {
         val timeSetListener = TimePickerDialog.OnTimeSetListener { view, hour, minute ->
             cal.set(Calendar.HOUR_OF_DAY, hour)
             cal.set(Calendar.MINUTE, minute)
-            val format = "HH:MM"
-            Log.i("time", hour.toString() + ":" + minute)
             time = hour.toString() + ":" + minute.toString()
-            Log.i("verify", time)
         }
         editTime.setOnClickListener {
             TimePickerDialog(this@MealActivity, timeSetListener,
@@ -78,6 +75,14 @@ class MealActivity : AppCompatActivity() {
                         _ID = datetime
                 )
                 mealModel.addMeal(realm, meal)
+                if (ing1Name.text.isNotEmpty() && ing1Qty.text.isNotEmpty()) {
+                    val ingredient = glucosense.org.Ingredient(
+                            parent = meal._ID,
+                            _name = ing1Name.text.toString(),
+                            quantity = ing1Qty.text.toString()
+                    )
+                    ingredientModel.addIngredient(realm, ingredient)
+                }
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
