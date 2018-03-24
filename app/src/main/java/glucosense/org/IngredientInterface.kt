@@ -9,5 +9,5 @@ interface IngredientInterface {
     fun delIngredient(realm: Realm, _ID: String): Boolean
     fun editIngredient(realm: Realm, ingredient: Ingredient): Boolean
     fun getIngredient(realm: Realm, _ID: String): Ingredient
-    fun getIngredients(realm: Realm): RealmResults<Ingredient>
+    fun getIngredients(realm: Realm, parent: String): RealmResults<Ingredient>
 }

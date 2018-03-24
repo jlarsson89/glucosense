@@ -30,7 +30,7 @@ class IngredientModel : IngredientInterface {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getIngredients(realm: Realm): RealmResults<Ingredient> {
-        return realm.where(Ingredient::class.java).findAll()
+    override fun getIngredients(realm: Realm, parent: String): RealmResults<Ingredient> {
+        return realm.where(Ingredient::class.java).equalTo("parent", parent).findAll()
     }
 }

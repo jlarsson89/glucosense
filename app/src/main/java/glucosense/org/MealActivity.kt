@@ -33,6 +33,8 @@ class MealActivity : AppCompatActivity() {
         val ing1Name = findViewById<EditText>(R.id.ingredient1Name)
         val ing1Qty = findViewById<EditText>(R.id.ingredient1Qty)
         val ing2Row = findViewById<LinearLayout>(R.id.ingredient2Row)
+        val ing2Name = findViewById<EditText>(R.id.ingredient2Name)
+        val ing2Qty = findViewById<EditText>(R.id.ingredient2Qty)
         refreshButton.setOnClickListener {
             if (ing1Name.text.toString().isNotEmpty() && ing1Qty.text.toString().isNotEmpty()) {
                 ing2Row.visibility = View.VISIBLE
@@ -80,6 +82,14 @@ class MealActivity : AppCompatActivity() {
                             parent = meal._ID,
                             _name = ing1Name.text.toString(),
                             quantity = ing1Qty.text.toString()
+                    )
+                    ingredientModel.addIngredient(realm, ingredient)
+                }
+                if (ing2Name.text.isNotEmpty() && ing2Qty.text.isNotEmpty()) {
+                    val ingredient = glucosense.org.Ingredient(
+                            parent = meal._ID,
+                            _name = ing2Name.text.toString(),
+                            quantity = ing2Qty.text.toString()
                     )
                     ingredientModel.addIngredient(realm, ingredient)
                 }
