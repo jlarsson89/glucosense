@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.nfc.tech.NfcA;
 import android.nfc.tech.NfcV;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import java.io.File;
@@ -40,6 +42,7 @@ public class ScanActivity extends Activity {
             finish();
             return;
         }
+        Log.i("intent", getIntent().toString());
         handleIntent(getIntent());
     }
 
@@ -63,10 +66,23 @@ public class ScanActivity extends Activity {
     private void handleIntent(Intent intent) {
         String action = intent.getAction();
         if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
+            Log.i("action_tech_discovered", "true");
             Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             String[] techList = tag.getTechList();
             String searchedTech = NfcV.class.getName();
             new NfcVReaderTask().execute(tag);
+        }
+        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
+            Log.i("action_tag_discovered", "true");
+        }
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+            Log.i("action_ndef_discovered", "true");
+        }
+        if (NfcAdapter.EXTRA_NDEF_MESSAGES.equals(action)) {
+            Log.i("extra_ndef_messages", "true");
+        }
+        if (NfcAdapter.EXTRA_TAG.equals(action)) {
+            Log.i("extra_tag", "true");
         }
     }
 
@@ -109,7 +125,8 @@ public class ScanActivity extends Activity {
             NfcV nfcvTag = NfcV.get(tag);
             try {
                 nfcvTag.connect();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
 
             }
 
@@ -142,8 +159,7 @@ public class ScanActivity extends Activity {
                 String[] block1 = new String[16];
                 String[] block2 = new String[32];
                 int ii=0;
-                for (int i=8; i< 8+15*12; i+=12)
-                {
+                for (int i=8; i< 8+15*12; i+=12) {
                     block1[ii] = s.substring(i,i+12);
                     final String g = s.substring(i+2,i+4)+s.substring(i,i+2);
                     if (current == ii) {
@@ -153,12 +169,10 @@ public class ScanActivity extends Activity {
                 }
                 reading = reading + "Current approximate glucose " + currentGlucose;
                 ii=0;
-                for (int i=188; i< 188+31*12; i+=12)
-                {
+                for (int i=188; i< 188+31*12; i+=12) {
                     block2[ii] = s.substring(i,i+12);
                     ii++;
                 }
-
             } catch (IOException e) {
                 ScanActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
@@ -169,7 +183,8 @@ public class ScanActivity extends Activity {
             addText(reading);
             try {
                 nfcvTag.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
 
             }
             Date date = new Date() ;
@@ -191,6 +206,7 @@ public class ScanActivity extends Activity {
 
     private void addText(final String s)
     {
+        Log.i("addtext", s);
         ScanActivity.this.runOnUiThread(new Runnable() {
             public void run() {
             }
