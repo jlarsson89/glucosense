@@ -24,22 +24,22 @@ class MainActivity : AppCompatActivity() {
         c.deleteRealmIfMigrationNeeded()
         Realm.setDefaultConfiguration(c.build())
         addButton.setOnClickListener {
-            Log.i("pressed", "add")
             val intent = Intent(this, AddActivity::class.java)
             startActivity(intent)
         }
         scanButton.setOnClickListener {
-            Log.i("pressed", "scan")
             val intent = Intent(this, ScanActivity::class.java)
             startActivity(intent)
         }
+        scan2Button.setOnClickListener {
+            val intent = Intent(this, Scan2Activity::class.java)
+            startActivity(intent)
+        }
         historyButton.setOnClickListener {
-            Log.i("pressed", "history")
             val intent = Intent(this, HistoryActivity::class.java)
             startActivity(intent)
         }
         statisticsButton.setOnClickListener {
-            Log.i("pressed", "statistics")
             val intent = Intent(this, StatisticsActivity::class.java)
             startActivity(intent)
         }

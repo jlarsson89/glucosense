@@ -52,7 +52,8 @@
         <activity
             android:name=".EditInjection"
             android:label="@string/title_activity_edit_injection"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Scan2Activity"></activity>
     </application>
 
 </manifest>
