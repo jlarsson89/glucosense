@@ -47,7 +47,7 @@ class HistoryActivity : AppCompatActivity() {
             }
         }
         mealModel = MealModel()
-        val mealResults = mealModel.getMeals(realm)
+        val mealResults = mealModel.getMeals(realm).reversed()
         if (mealResults.isNotEmpty()) {
             mealResults.forEach { result ->
                 val layout = LinearLayout(this)
