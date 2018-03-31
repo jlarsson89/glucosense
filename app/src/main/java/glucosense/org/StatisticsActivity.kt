@@ -14,7 +14,9 @@ class StatisticsActivity : AppCompatActivity() {
     private var mealModel = MealModel()
     private var ingredientModel = IngredientModel()
     var realm = Realm.getDefaultInstance()
-    val url = ""
+    val key: String = ""
+    var food: String = ""
+    var url = "https://api.nal.usda.gov/ndb/search/?format=json&q=$food&sort=n&max=25&offset=0&api_key=$key"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,5 +35,8 @@ class StatisticsActivity : AppCompatActivity() {
         injTotalText.text = injectionModel.getInjections(realm).size.toString()
         lastMealTimeText.text = mealModel.getMeals(realm).last()?._ID
         todayMealsCarbsText.text = mealModel.getMeals(realm).size.toString()
+        food = "pasta"
+        val result = URL(url)
+        Log.i("result", result.toString())
     }
 }
