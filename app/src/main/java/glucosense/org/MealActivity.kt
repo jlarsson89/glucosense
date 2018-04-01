@@ -21,6 +21,9 @@ class MealActivity : AppCompatActivity() {
     var date: String? = null
     var time: String? = null
     private val validDatetime: String = "([12]\\d{3}-(0?[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])) ([0-9]|0?[0-9]|1[0-9]|2[0-3]):[0-5]?[0-9]\$"
+    val key: String = ""
+    var food: String = ""
+    var url = "https://api.nal.usda.gov/ndb/search/?format=json&q=$food&sort=n&max=25&offset=0&api_key=$key"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
