@@ -97,4 +97,5 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_edit_injection">EditInjection</string>
+    <string name="title_activity_meal_test">MealTestActivity</string>
 </resources>
