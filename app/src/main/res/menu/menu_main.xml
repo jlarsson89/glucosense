@@ -17,4 +17,9 @@
         android:orderInCategory="100"
         android:title="Help"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/searchMenu"
+        app:actionViewClass="android.widget.SearchView"
+        android:title="@android:string/search_go"
+        app:showAsAction="ifRoom" />
 </menu>
