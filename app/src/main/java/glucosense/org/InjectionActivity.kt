@@ -31,7 +31,16 @@ class InjectionActivity : AppCompatActivity() {
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, month)
             cal.set(Calendar.DAY_OF_MONTH, day)
-            date = year.toString() + "-" + (month+1).toString() + "-" + day.toString()
+            var nmonth = (month + 1).toString()
+            var nday = day.toString()
+            if (nmonth.length < 2) {
+                nmonth = "0" + nmonth
+            }
+            if (nday.length < 2) {
+                nday = "0" + nday
+            }
+            date = year.toString() + "-" + nmonth + "-" + nday
+            datePicker.text = date
         }
         editDate.setOnClickListener {
             DatePickerDialog(this@InjectionActivity, dateSetListener,
@@ -42,7 +51,16 @@ class InjectionActivity : AppCompatActivity() {
         val timeSetListener = TimePickerDialog.OnTimeSetListener { view, hour, minute ->
             cal.set(Calendar.HOUR_OF_DAY, hour)
             cal.set(Calendar.MINUTE, minute)
-            time = hour.toString() + ":" + minute.toString()
+            var nhour = hour.toString()
+            var nminute = minute.toString()
+            if (nhour.length < 2) {
+                nhour = "0" + nhour
+            }
+            if (nminute.length < 2) {
+                nminute = "0" + nminute
+            }
+            time = nhour + ":" + nminute
+            timePicker.text = time
         }
         editTime.setOnClickListener {
             TimePickerDialog(this@InjectionActivity, timeSetListener,
