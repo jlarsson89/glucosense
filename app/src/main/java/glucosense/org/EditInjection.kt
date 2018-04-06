@@ -28,8 +28,19 @@ class EditInjection : AppCompatActivity() {
         Log.i("type", inj?.type)
         Log.i("units", inj?.units)
         editButton.setOnClickListener{
-            type = typeInput.text.toString()
-            units = unitsInput.text.toString()
+            if (inj?.type != null) {
+                Log.i("type", inj?.type.toString())
+                type = inj.type
+            }
+            else {
+                type = typeInput.text.toString()
+            }
+            if (inj?.units != null) {
+                units = inj.units
+            }
+            else {
+                units = unitsInput.text.toString()
+            }
             val newInj = glucosense.org.Injection(
                     _ID = id,
                     type = type,
