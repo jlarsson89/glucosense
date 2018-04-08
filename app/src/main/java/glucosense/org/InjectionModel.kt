@@ -51,4 +51,17 @@ class InjectionModel : InjectionInterface {
     override fun getInjections(realm: Realm): RealmResults<Injection> {
         return realm.where(Injection::class.java).findAll()
     }
+
+    override fun getDayInjections(realm: Realm, _ID: String): RealmResults<Injection> {
+        return realm.where(Injection::class.java).beginsWith("_ID", _ID).findAll()
+    }
+
+    override fun getDayUnits(realm: Realm, _ID: String): String {
+        var total = 0
+        val injections = realm.where(Injection::class.java).beginsWith("_ID", _ID).findAll()
+        for (i in injections) {
+            total += i.units.toInt()
+        }
+        return total.toString()
+    }
 }

@@ -9,4 +9,6 @@ interface InjectionInterface {
     fun editInjection(realm: Realm, injection: Injection): Boolean
     fun getInjection(realm: Realm, _ID: String): Injection?
     fun getInjections(realm: Realm): RealmResults<Injection>
+    fun getDayInjections(realm: Realm, _ID: String): RealmResults<Injection>
+    fun getDayUnits(realm: Realm, _ID: String): String
 }
