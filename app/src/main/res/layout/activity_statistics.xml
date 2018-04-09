@@ -6,64 +6,250 @@
     android:layout_height="match_parent"
     tools:context="glucosense.org.StatisticsActivity">
 
-    <LinearLayout
-        android:id="@+id/layout"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:scrollbars="vertical">
         <LinearLayout
-            android:id="@+id/topBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <LinearLayout
-                android:id="@+id/scanInfo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/weekMeals"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <LinearLayout
-                    android:id="@+id/scansTotalRow"
+                    android:id="@+id/weekMealsTimeRow"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
                     <TextView
-                        android:id="@+id/scansTotalLabel"
+                        android:id="@+id/weekMealsCountLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total scans: " />
+                        android:text="Meals this week: " />
                     <TextView
-                        android:id="@+id/scansTotalText"
+                        android:id="@+id/weekMealsCountText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0" />
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/scansTodayRow"
+                    android:id="@+id/weekMealsCarbsRow"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
                     <TextView
-                        android:id="@+id/scansTodayLabel"
+                        android:id="@+id/weekMealsCarbsLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Scans today: " />
+                        android:text="Carbs: " />
                     <TextView
-                        android:id="@+id/scansTodayText"
+                        android:id="@+id/weekMealsCarbsText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0" />
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/scansAvgRow"
+                    android:id="@+id/weekMealsFatRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/weekMealsFatLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fat: " />
+                    <TextView
+                        android:id="@+id/weekMealsFatText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/weekMealsProteinRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/weekMealsProteinLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Proteins: " />
+                    <TextView
+                        android:id="@+id/weekMealsProteinText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/weekMealsFibreRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/weekMealsFibreLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fibre: " />
+                    <TextView
+                        android:id="@+id/weekMealsFibreText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/weekMealsCaloriesRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/weekMealsCaloriesLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Calories: " />
+                    <TextView
+                        android:id="@+id/weekMealscaloriesText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/todayMeals"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/todayMealsCountRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/todayMealsCountLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Meals today: " />
+                    <TextView
+                        android:id="@+id/todayMealsCountText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/todayMealsCarbsRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/todayMealsCarbsLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Carbs: " />
+                    <TextView
+                        android:id="@+id/todayMealsCarbsText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/todayMealsFatRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/todayMealsFatLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fat: " />
+                    <TextView
+                        android:id="@+id/todayMealsFatText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/todayMealsProteinRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/todayMealsProteinLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Proteins: " />
+                    <TextView
+                        android:id="@+id/todayMealsProteinText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/todayMealsFibreRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/todayMealsFibreLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fibre: " />
+                    <TextView
+                        android:id="@+id/todayMealsFibreText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/todayMealsCaloriesRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/todayMealsCaloriesLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Calories: " />
+                    <TextView
+                        android:id="@+id/todayMealscaloriesText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/injUnitInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/injUnitsTotalRow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:id="@+id/scansAvgLabel"
+                        android:id="@+id/injUnitsTotalLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Scans per day: " />
+                        android:text="Total units injected: " />
                     <TextView
-                        android:id="@+id/scansAvgText"
+                        android:id="@+id/injUnitsTotalText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/injUnitsTodayRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/injUnitsTodayLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Units injected today: " />
+                    <TextView
+                        android:id="@+id/injUnitsTodayText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0" />
@@ -71,8 +257,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/injInfo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <LinearLayout
                     android:id="@+id/injTotalRow"
@@ -136,364 +322,194 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/injUnitInfo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/topBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/scanInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/scansTotalRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/scansTotalLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total scans: " />
+                        <TextView
+                            android:id="@+id/scansTotalText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/scansTodayRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/scansTodayLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Scans today: " />
+                        <TextView
+                            android:id="@+id/scansTodayText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/scansAvgRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/scansAvgLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Scans per day: " />
+                        <TextView
+                            android:id="@+id/scansAvgText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/mealTodayBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/lastMeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/lastMealTimeRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/lastMealTimeLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Last meal: " />
+                        <TextView
+                            android:id="@+id/lastMealTimeText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/lastMealCarbsRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/lastMealCarbsLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Carbs: " />
+                        <TextView
+                            android:id="@+id/lastMealCarbsText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/lastMealFatRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/lastMealFatLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fat: " />
+                        <TextView
+                            android:id="@+id/lastMealFatText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/lastMealProteinRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/lastMealProteinLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Proteins: " />
+                        <TextView
+                            android:id="@+id/lastMealProteinText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/lastMealFibreRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/lastMealFibreLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fibre: " />
+                        <TextView
+                            android:id="@+id/lastMealFibreText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/lastMealCaloriesRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/lastMealCaloriesLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Calories: " />
+                        <TextView
+                            android:id="@+id/lastMealcaloriesText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <LinearLayout
-                    android:id="@+id/injUnitsTotalRow"
+                <TextView
+                    android:id="@+id/foodid"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/injUnitsTotalLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Total units injected: "/>
-                    <TextView
-                        android:id="@+id/injUnitsTotalText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/injUnitsTodayRow"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/foodurl"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/injUnitsTodayLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Units injected today: "/>
-                    <TextView
-                        android:id="@+id/injUnitsTodayText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/mealTotalBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/backButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Back" />
             </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/mealTodayBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:id="@+id/lastMeal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:id="@+id/lastMealTimeRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/lastMealTimeLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Last meal: "/>
-                    <TextView
-                        android:id="@+id/lastMealTimeText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/lastMealCarbsRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/lastMealCarbsLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Carbs: "/>
-                    <TextView
-                        android:id="@+id/lastMealCarbsText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/lastMealFatRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/lastMealFatLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fat: "/>
-                    <TextView
-                        android:id="@+id/lastMealFatText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/lastMealProteinRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/lastMealProteinLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Proteins: "/>
-                    <TextView
-                        android:id="@+id/lastMealProteinText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/lastMealFibreRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/lastMealFibreLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fibre: "/>
-                    <TextView
-                        android:id="@+id/lastMealFibreText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/lastMealCaloriesRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/lastMealCaloriesLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Calories: "/>
-                    <TextView
-                        android:id="@+id/lastMealcaloriesText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/todayMeals"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:id="@+id/todayMealsCountRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/todayMealsCountLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Meals today: "/>
-                    <TextView
-                        android:id="@+id/todayMealsCountText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/todayMealsCarbsRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/todayMealsCarbsLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Carbs: "/>
-                    <TextView
-                        android:id="@+id/todayMealsCarbsText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/todayMealsFatRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/todayMealsFatLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fat: "/>
-                    <TextView
-                        android:id="@+id/todayMealsFatText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/todayMealsProteinRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/todayMealsProteinLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Proteins: "/>
-                    <TextView
-                        android:id="@+id/todayMealsProteinText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/todayMealsFibreRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/todayMealsFibreLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fibre: "/>
-                    <TextView
-                        android:id="@+id/todayMealsFibreText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/todayMealsCaloriesRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/todayMealsCaloriesLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Calories: "/>
-                    <TextView
-                        android:id="@+id/todayMealscaloriesText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/weekMeals"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:id="@+id/weekMealsTimeRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/weekMealsCountLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Meals this week: "/>
-                    <TextView
-                        android:id="@+id/weekMealsCountText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/weekMealsCarbsRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/weekMealsCarbsLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Carbs: "/>
-                    <TextView
-                        android:id="@+id/weekMealsCarbsText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/weekMealsFatRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/weekMealsFatLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fat: "/>
-                    <TextView
-                        android:id="@+id/weekMealsFatText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/weekMealsProteinRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/weekMealsProteinLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Proteins: "/>
-                    <TextView
-                        android:id="@+id/weekMealsProteinText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/weekMealsFibreRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/weekMealsFibreLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fibre: "/>
-                    <TextView
-                        android:id="@+id/weekMealsFibreText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/weekMealsCaloriesRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/weekMealsCaloriesLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Calories: "/>
-                    <TextView
-                        android:id="@+id/weekMealscaloriesText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"/>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/mealTotalBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>
