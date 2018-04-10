@@ -3,6 +3,7 @@ package glucosense.org
 import android.util.Log
 import io.realm.Realm
 import io.realm.RealmResults
+import io.realm.kotlin.where
 
 class InjectionModel : InjectionInterface {
     override fun addInjection(realm: Realm, injection: Injection): Boolean {
@@ -59,6 +60,15 @@ class InjectionModel : InjectionInterface {
     override fun getDayUnits(realm: Realm, _ID: String): String {
         var total = 0
         val injections = realm.where(Injection::class.java).beginsWith("_ID", _ID).findAll()
+        for (i in injections) {
+            total += i.units.toInt()
+        }
+        return total.toString()
+    }
+
+    override fun getTotalUnits(realm: Realm): String {
+        var total = 0
+        val injections = realm.where(Injection::class.java).findAll()
         for (i in injections) {
             total += i.units.toInt()
         }

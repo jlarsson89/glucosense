@@ -35,6 +35,7 @@ class StatisticsActivity : AppCompatActivity() {
         injTodayText.text = injectionModel.getDayInjections(realm, formatted).size.toString()
         Log.i("units today", injectionModel.getDayUnits(realm, formatted))
         injUnitsTodayText.text = injectionModel.getDayUnits(realm, formatted)
+        injUnitsTotalText.text = injectionModel.getTotalUnits(realm)
         lastMealTimeText.text = mealModel.getMeals(realm).last()?._ID
         todayMealsCarbsText.text = mealModel.getMeals(realm).size.toString()
        // food = "pasta"
