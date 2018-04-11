@@ -9,4 +9,5 @@ interface MealInterface {
     fun editMeal(realm: Realm, meal: Meal): Boolean
     fun getMeal(realm: Realm, _ID: String): Meal?
     fun getMeals(realm: Realm): RealmResults<Meal>
+    fun getDayMeals(realm: Realm, _ID: String): RealmResults<Meal>
 }

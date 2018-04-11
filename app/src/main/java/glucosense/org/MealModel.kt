@@ -41,4 +41,8 @@ class MealModel : MealInterface {
     override fun getMeals(realm: Realm): RealmResults<Meal> {
         return realm.where(Meal::class.java).findAll()
     }
+
+    override fun getDayMeals(realm: Realm, _ID: String): RealmResults<Meal> {
+        return realm.where(Meal::class.java).beginsWith("_ID", _ID).findAll()
+    }
 }
