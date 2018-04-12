@@ -5,12 +5,28 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.google.gson.Gson
+import com.squareup.moshi.KotlinJsonAdapterFactory
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Rfc3339DateJsonAdapter
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_statistics.*
 import java.net.URL
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
+object MoshiBuilder {
+    val moshiInstance: Moshi
+        get() = Moshi.Builder()
+                .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
+
+                .add(DefaultOnDataMismatchAdapter.newFactory(Ingredient::class.java, null))
+
+                .add(FilterNullValuesFromListAdapter.newFactory(Ingredient::class.java))
+
+                .add(KotlinJsonAdapterFactory())
+                .build()
+}
 class StatisticsActivity : AppCompatActivity() {
     private var injectionModel = InjectionModel()
     private var mealModel = MealModel()
