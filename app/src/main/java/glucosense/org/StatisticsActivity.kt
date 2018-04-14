@@ -10,10 +10,12 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Rfc3339DateJsonAdapter
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_statistics.*
+import org.jetbrains.anko.custom.async
 import java.net.URL
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import java.util.concurrent.Executors
 
 object MoshiBuilder {
     val moshiInstance: Moshi
@@ -60,12 +62,17 @@ class StatisticsActivity : AppCompatActivity() {
         Log.i("food", food)
         Log.i("key", key)
         val data = "https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=$key&nutrients=205&nutrients=204&nutrients=208&nutrients=269&ndbno=$food"
-        val result1 = URL(data).query
+        //val result1 = URL(data).readBytes()
         //Log.i("result", result.toString())
-        Log.i("result1", result1.toString())
+        //Log.i("result1", result1.toString())
         foodid.text = food
         foodurl.text = data
         var gson = Gson()
+        val executor = Executors.newScheduledThreadPool(4)
+        async(executor) {
+            val result2 = URL(data).readText()
+            Log.i("result", result2)
+        }
         //val url = URL(data)
         /*val conn = url.openConnection() as HttpURLConnection
         conn.requestMethod = "GET"
