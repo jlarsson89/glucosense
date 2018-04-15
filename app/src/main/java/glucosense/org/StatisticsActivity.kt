@@ -4,31 +4,15 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.google.gson.Gson
-import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.Rfc3339DateJsonAdapter
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_statistics.*
 import org.jetbrains.anko.custom.async
 import java.net.URL
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 import java.util.concurrent.Executors
 
-object MoshiBuilder {
-    val moshiInstance: Moshi
-        get() = Moshi.Builder()
-                .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
-
-                .add(DefaultOnDataMismatchAdapter.newFactory(Ingredient::class.java, null))
-
-                .add(FilterNullValuesFromListAdapter.newFactory(Ingredient::class.java))
-
-                .add(KotlinJsonAdapterFactory())
-                .build()
-}
 class StatisticsActivity : AppCompatActivity() {
     private var injectionModel = InjectionModel()
     private var mealModel = MealModel()
@@ -44,9 +28,6 @@ class StatisticsActivity : AppCompatActivity() {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val formatted = today.format(formatter)
         var food: String = ""
-        //val data = Executors.newSingleThreadExecutor().execute({
-            //val json = URL(url).readText()
-        //})
         injectionModel = InjectionModel()
         mealModel = MealModel()
         ingredientModel = IngredientModel()
@@ -56,33 +37,38 @@ class StatisticsActivity : AppCompatActivity() {
         injUnitsTotalText.text = injectionModel.getTotalUnits(realm)
         lastMealTimeText.text = mealModel.getMeals(realm).last()?._ID
         todayMealsCarbsText.text = mealModel.getMeals(realm).size.toString()
-       // food = "pasta"
-        //val result = URL(url)
         food = "01009"
         Log.i("food", food)
         Log.i("key", key)
         val data = "https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=$key&nutrients=205&nutrients=204&nutrients=208&nutrients=269&ndbno=$food"
-        //val result1 = URL(data).readBytes()
-        //Log.i("result", result.toString())
-        //Log.i("result1", result1.toString())
         foodid.text = food
         foodurl.text = data
-        var gson = Gson()
         val executor = Executors.newScheduledThreadPool(4)
         async(executor) {
             val result2 = URL(data).readText()
-            Log.i("result", result2)
+            parseItem(result2)
         }
-        //val url = URL(data)
-        /*val conn = url.openConnection() as HttpURLConnection
-        conn.requestMethod = "GET"
-        // read the response
-        val in1 = BufferedInputStream(conn.inputStream)
-        val response = convertStreamToString(in1)
-        Log.i("data", response)*/
         backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    fun parseItem(json: String) {
+        val moshi = Moshi.Builder().build()
+        val jsonAdapter = moshi.adapter<Array<JSONIngredient>>(Array<JSONIngredient>::class.java)
+        var ingredients: Array<JSONIngredient>? = null
+        try {
+            ingredients = jsonAdapter.fromJson(json)
+        }
+        catch (e: Exception) {
+
+        }
+        if (ingredients == null) {
+            Log.i("ingredients", "null")
+        }
+        for (i in ingredients!!) {
+            Log.i("i", i.id + " " + i.name + " " + i.quantity)
         }
     }
 }
