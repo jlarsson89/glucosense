@@ -27,7 +27,6 @@ class StatisticsActivity : AppCompatActivity() {
         val today = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val formatted = today.format(formatter)
-        var food: String = ""
         injectionModel = InjectionModel()
         mealModel = MealModel()
         ingredientModel = IngredientModel()
@@ -37,7 +36,7 @@ class StatisticsActivity : AppCompatActivity() {
         injUnitsTotalText.text = injectionModel.getTotalUnits(realm)
         lastMealTimeText.text = mealModel.getMeals(realm).last()?._ID
         todayMealsCarbsText.text = mealModel.getMeals(realm).size.toString()
-        food = "01009"
+        var food = "01009"
         Log.i("food", food)
         Log.i("key", key)
         val data = "https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=$key&nutrients=205&nutrients=204&nutrients=208&nutrients=269&ndbno=$food"
@@ -46,6 +45,7 @@ class StatisticsActivity : AppCompatActivity() {
         val executor = Executors.newScheduledThreadPool(4)
         async(executor) {
             val result2 = URL(data).readText()
+            Log.i("result2", result2)
             parseItem(result2)
         }
         backButton.setOnClickListener {
@@ -56,19 +56,21 @@ class StatisticsActivity : AppCompatActivity() {
 
     fun parseItem(json: String) {
         val moshi = Moshi.Builder().build()
-        val jsonAdapter = moshi.adapter<Array<JSONIngredient>>(Array<JSONIngredient>::class.java)
-        var ingredients: Array<JSONIngredient>? = null
+        val jsonAdapter = moshi.adapter<Array<Report>>(Array<Report>::class.java)
+        Log.i("jsonadapter", jsonAdapter.toString())
+        var ingredients: Array<Report>? = null
         try {
             ingredients = jsonAdapter.fromJson(json)
         }
         catch (e: Exception) {
-
+            e.stackTrace
         }
+        Log.i("ingredients", ingredients?.size.toString())
         if (ingredients == null) {
             Log.i("ingredients", "null")
         }
         for (i in ingredients!!) {
-            Log.i("i", i.id + " " + i.name + " " + i.quantity)
+            Log.i("i", i.toString())
         }
     }
 }
