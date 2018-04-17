@@ -1,11 +1,15 @@
 package glucosense.org
 
-internal class Report {
-    val sr = ""
-    val groups = ""
-    val subset = ""
-    val end = ""
-    val start = ""
-    val total = ""
-    val foods = null
+import java.lang.reflect.Array
+
+class Reports {
+    data class Report (
+        val sr: String,
+        val groups: String,
+        val subset: String,
+        val end: String,
+        val start: String,
+        val total: String,
+        val foods: Array
+    )
 }
