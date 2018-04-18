@@ -26,6 +26,7 @@ class StatisticsActivity : AppCompatActivity() {
     private var injectionModel = InjectionModel()
     private var mealModel = MealModel()
     private var ingredientModel = IngredientModel()
+    val weight = R.string.pref_title_weight.toString()
     var realm = Realm.getDefaultInstance()
     val key: String = "NO01wqhp8hVdKJMgJRQqyu6syG9lwCUyBML6tmJE"
     //var url = "https://api.nal.usda.gov/ndb/search/?format=json&q=$food&sort=n&max=25&offset=0&api_key=$key"
@@ -98,6 +99,7 @@ class StatisticsActivity : AppCompatActivity() {
         gson.fromJson<MEntity<Food>>(json, object : TypeToken<MEntity<Food>>() {}.type)
         // try arraylist
         // implement warnings if user injects more than recommended in a day, eats over a certain amount etc
+        // user should inject roughly 1 units per 10 to 15 grams of carbs
         val userMEntity = gson.fromJsonToGeneric<MEntity<Food>>(json)
         Log.i("test", userMEntity.toString())
         Log.i("gson", jsonString)
