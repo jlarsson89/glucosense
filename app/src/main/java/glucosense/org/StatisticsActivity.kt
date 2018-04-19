@@ -3,6 +3,7 @@ package glucosense.org
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import com.beust.klaxon.*
 import com.google.gson.Gson
@@ -11,6 +12,7 @@ import com.squareup.moshi.Moshi
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_statistics.*
 import org.jetbrains.anko.custom.async
+import org.jetbrains.anko.defaultSharedPreferences
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.Reader
@@ -21,12 +23,15 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.Executors
 import java.util.logging.Level.parse
 import java.util.regex.Pattern
+import android.content.SharedPreferences
+
+
 
 class StatisticsActivity : AppCompatActivity() {
     private var injectionModel = InjectionModel()
     private var mealModel = MealModel()
     private var ingredientModel = IngredientModel()
-    val weight = R.string.pref_title_weight.toString()
+    var weight = "" // get proper value
     var realm = Realm.getDefaultInstance()
     val key: String = "NO01wqhp8hVdKJMgJRQqyu6syG9lwCUyBML6tmJE"
     //var url = "https://api.nal.usda.gov/ndb/search/?format=json&q=$food&sort=n&max=25&offset=0&api_key=$key"
@@ -50,6 +55,8 @@ class StatisticsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
+        val SP = PreferenceManager.getDefaultSharedPreferences(baseContext)
+        weight = SP.getString("user_weight", "NA")
         val today = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val formatted = today.format(formatter)
@@ -59,6 +66,16 @@ class StatisticsActivity : AppCompatActivity() {
         injTotalText.text = injectionModel.getInjections(realm).size.toString()
         injTodayText.text = injectionModel.getDayInjections(realm, formatted).size.toString()
         injUnitsTodayText.text = injectionModel.getDayUnits(realm, formatted)
+        if (injectionModel.getDayUnits(realm, formatted).toInt() < weight.toInt()) {
+            Log.i("today", injectionModel.getDayUnits(realm, formatted))
+            Log.i("weight", weight)
+            Log.i("weight", "you're injecting within your range")
+        }
+        else {
+            Log.i("today", injectionModel.getDayUnits(realm, formatted))
+            Log.i("weight", weight)
+            Log.i("weight", "you're injecting too much")
+        }
         injUnitsTotalText.text = injectionModel.getTotalUnits(realm)
         lastMealTimeText.text = mealModel.getMeals(realm).last()?._ID
         todayMealsCarbsText.text = mealModel.getMeals(realm).size.toString()
