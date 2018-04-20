@@ -66,7 +66,8 @@ class StatisticsActivity : AppCompatActivity() {
         injTotalText.text = injectionModel.getInjections(realm).size.toString()
         injTodayText.text = injectionModel.getDayInjections(realm, formatted).size.toString()
         injUnitsTodayText.text = injectionModel.getDayUnits(realm, formatted)
-        if (injectionModel.getDayUnits(realm, formatted).toInt() < weight.toInt()) {
+        if (injectionModel.getDayUnits(realm, formatted).toInt() > (0.5 * weight.toInt()) &&
+                injectionModel.getDayUnits(realm, formatted).toInt() < (0.8 * weight.toInt())) {
             Log.i("today", injectionModel.getDayUnits(realm, formatted))
             Log.i("weight", weight)
             Log.i("weight", "you're injecting within your range")
