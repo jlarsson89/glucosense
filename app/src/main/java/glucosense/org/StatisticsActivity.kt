@@ -66,16 +66,27 @@ class StatisticsActivity : AppCompatActivity() {
         injTotalText.text = injectionModel.getInjections(realm).size.toString()
         injTodayText.text = injectionModel.getDayInjections(realm, formatted).size.toString()
         injUnitsTodayText.text = injectionModel.getDayUnits(realm, formatted)
+        if (injectionModel.getDayUnits(realm, formatted).toInt() < (0.5 * weight.toInt())) {
+            Log.i("today", injectionModel.getDayUnits(realm, formatted))
+            Log.i("weight", weight)
+            Log.i("weight", "you're injecting within your range")
+            stats_injection.text = "You have not yet injected enough units today."
+            injUnitsTodayText.setTextColor(Integer.parseUnsignedInt("ffffbb33",16))
+        }
         if (injectionModel.getDayUnits(realm, formatted).toInt() > (0.5 * weight.toInt()) &&
                 injectionModel.getDayUnits(realm, formatted).toInt() < (0.8 * weight.toInt())) {
             Log.i("today", injectionModel.getDayUnits(realm, formatted))
             Log.i("weight", weight)
             Log.i("weight", "you're injecting within your range")
+            stats_injection.text = "You are injecting within your range."
+            injUnitsTodayText.setTextColor(Integer.parseUnsignedInt("ff669900",16))
         }
         else {
             Log.i("today", injectionModel.getDayUnits(realm, formatted))
             Log.i("weight", weight)
             Log.i("weight", "you're injecting too much")
+            stats_injection.text = "You have injected over your recommended limit based on your weight."
+            injUnitsTodayText.setTextColor(Integer.parseUnsignedInt("ffcc0000", 16))
         }
         injUnitsTotalText.text = injectionModel.getTotalUnits(realm)
         lastMealTimeText.text = mealModel.getMeals(realm).last()?._ID
