@@ -90,7 +90,10 @@ class StatisticsActivity : AppCompatActivity() {
         }
         injUnitsTotalText.text = injectionModel.getTotalUnits(realm)
         lastMealTimeText.text = mealModel.getMeals(realm).last()?._ID
-        todayMealsCarbsText.text = mealModel.getMeals(realm).size.toString()
+        todayMealsCountText.text = mealModel.getDayMeals(realm, formatted).size.toString()
+        if (mealModel.getDayMeals(realm, formatted).size == 0) {
+            stats_meal.text = "You have not eaten anything yet today."
+        }
         var food = "01009"
         Log.i("food", food)
         Log.i("key", key)
