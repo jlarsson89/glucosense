@@ -130,19 +130,43 @@ class StatisticsActivity : AppCompatActivity() {
         val executor = Executors.newScheduledThreadPool(4)
         async(executor) {
             val result2 = URL(data).readText()
-            Log.i("result2", result2)
             //parseItem(result2)
             val gson: Gson = Gson()
-            val report1: Report = gson.fromJson(result2, Report::class.java)
+            val gson3 = GsonBuilder().setLenient().create()
+            val report1: Report = gson3.fromJson(result2, Report::class.java)
             val food1: Foods = gson.fromJson(result2, Foods::class.java)
             val nutrient1: Nutrients = gson.fromJson(result2, Nutrients::class.java)
+            /*val moshi = Moshi.Builder().build()
+            val jsonAdapter = moshi.adapter<Array<Report>>(Array<Report>::class.java)
+            var reports: Array<Report>? = null
+            try {
+                reports = jsonAdapter.fromJson(data)
+            }
+            catch (e: Exception) {
+                e.printStackTrace()
+            }
+            for (r in reports!!) {
+                println(r)
+            }*/
+            /*val jsonAdapter = moshi.adapter<Array<Nutrients>>(Array<Nutrients>::class.java)
+            var nutrients: Array<Nutrients>? = null
+            try {
+                nutrients = jsonAdapter.fromJson(data)
+            }
+            catch (e: Exception) {
+                e.printStackTrace()
+            }
+            for (n in nutrients!!) {
+                println(n)
+            }*/
+            println(result2)
             Log.i("report1", report1.toString())
             println(report1)
             Log.i("food1", food1.toString())
             println(food1)
             Log.i("nutrients1", nutrient1.toString())
             println(nutrient1)
-            val json = """{"name": "Kolineer", "age": "26", "messages" : ["Master Kotlin","At Kolination"]}"""
+            /*val json = """{"name": "Kolineer", "age": "26", "messages" : ["Master Kotlin","At Kolination"]}"""
             val person1 : Person = gson.fromJson(json, Person::class.java)
             println(person1)
             val jsonList = """[{"name": "Kolineer", "age": "26", "messages" : ["Master Kotlin","At Kolination"]},
@@ -161,11 +185,18 @@ class StatisticsActivity : AppCompatActivity() {
 
             println("=== Map to JSON ===")
             val jsonPersonMap: String = gson1.toJson(personMap)
-            println(jsonPersonMap)
+            println(jsonPersonMap)*/
             val gson2 = GsonBuilder().setPrettyPrinting().create()
-            var nutrientlist: List<Report> = gson2.fromJson(result2, object : TypeToken<List<Report>>() {}.type)
-            Log.i("list", nutrientlist.size.toString())
-            nutrientlist.forEach { println(it)}
+            var nutrientMap: Map<String, Any> = gson3.fromJson(result2, object : TypeToken<Map<String, Any>>() {}.type)
+            nutrientMap.forEach{
+                println(it.key)
+                println(it.value)
+            }
+            //println(jsonList)
+            //println(result2)
+            //var nutrientlist: List<Nutrients> = gson2.fromJson(result2, object : TypeToken<List<Nutrients>>() {}.type)
+            //Log.i("list", nutrientlist.size.toString())
+            //nutrientlist.forEach { println(it)}
             /*
             val jsonObj = JSONObject(result2)
             val jsonString: String = gson.toJson(jsonObj)
