@@ -24,7 +24,10 @@ import java.util.concurrent.Executors
 import java.util.logging.Level.parse
 import java.util.regex.Pattern
 import android.content.SharedPreferences
-
+import com.github.kittinunf.forge.Forge
+import com.github.kittinunf.forge.core.*
+import com.github.kittinunf.forge.util.create
+import com.google.gson.GsonBuilder
 
 
 class StatisticsActivity : AppCompatActivity() {
@@ -40,18 +43,42 @@ class StatisticsActivity : AppCompatActivity() {
     )
 
     data class Food(
-            var name: String? = null,
-            var ndbno: String? = null,
-            var nutrients: MEntity<Nutrient>? = null
+            var name: String,
+            var ndbno: String,
+            var nutrients: List<Nutrient>
     )
 
     data class Nutrient(
-            var nutrient_id: String? = null,
-            var nutrient: String? = null,
-            var unit: String? = null,
-            var value: String? = null,
-            var gm: String?
+            var nutrient_id: String,
+            var nutrient: String,
+            var unit: String,
+            var value: String,
+            var gm: String
     )
+    /*data class User(val id: Int,
+                    val name: String,
+                    val age: Int,
+                    val email: String?,
+                    val friends: List<User>,
+                    val dogs: List<Dog>?)
+
+    data class Dog(val name: String, val breed: String, val male: Boolean)
+
+    fun userDeserializer(json: JSON) =
+            ::User.create.
+                    map(json at "id").
+                    apply(json at "name").
+                    apply(json at "age").
+                    apply(json maybeAt "email").
+                    apply(json.list("friends", ::userDeserializer)).  //userDeserializer is a function, use :: as a function reference
+                    apply(json.maybeList("dogs", dogDeserializer))  //dogDeserializer is a lambda, use it directly
+
+    val dogDeserializer = { json: JSON ->
+        ::Dog.create.
+                map(json at "name").
+                apply(json at "breed").
+                apply(json at "is_male")
+    }*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
@@ -104,7 +131,62 @@ class StatisticsActivity : AppCompatActivity() {
         async(executor) {
             val result2 = URL(data).readText()
             Log.i("result2", result2)
-            parseItem(result2)
+            //parseItem(result2)
+            val gson: Gson = Gson()
+            val report1: Report = gson.fromJson(result2, Report::class.java)
+            val food1: Foods = gson.fromJson(result2, Foods::class.java)
+            val nutrient1: Nutrients = gson.fromJson(result2, Nutrients::class.java)
+            Log.i("report1", report1.toString())
+            println(report1)
+            Log.i("food1", food1.toString())
+            println(food1)
+            Log.i("nutrients1", nutrient1.toString())
+            println(nutrient1)
+            val json = """{"name": "Kolineer", "age": "26", "messages" : ["Master Kotlin","At Kolination"]}"""
+            val person1 : Person = gson.fromJson(json, Person::class.java)
+            println(person1)
+            val jsonList = """[{"name": "Kolineer", "age": "26", "messages" : ["Master Kotlin","At Kolination"]},
+			{"name":"Kolineer Master","age":30,"messages":["I am Kotlin Master","still learning Kotlin at Kotlination"]}]"""
+            val gson1 = GsonBuilder().setPrettyPrinting().create()
+
+            println("=== List from JSON ===")
+            var personList: List<Person> = gson1.fromJson(jsonList, object : TypeToken<List<Person>>() {}.type)
+            personList.forEach { println(it) }
+
+            println("=== List to JSON ===")
+            val jsonPersonList: String = gson1.toJson(personList)
+            println(jsonPersonList)
+            var personMap: Map<String, Any> = gson1.fromJson(json, object : TypeToken<Map<String, Any>>() {}.type)
+            personMap.forEach { println(it) }
+
+            println("=== Map to JSON ===")
+            val jsonPersonMap: String = gson1.toJson(personMap)
+            println(jsonPersonMap)
+            val gson2 = GsonBuilder().setPrettyPrinting().create()
+            var nutrientlist: List<Report> = gson2.fromJson(result2, object : TypeToken<List<Report>>() {}.type)
+            Log.i("list", nutrientlist.size.toString())
+            nutrientlist.forEach { println(it)}
+            /*
+            val jsonObj = JSONObject(result2)
+            val jsonString: String = gson.toJson(jsonObj)
+            gson.fromJson<MEntity<Foods>>(result2, object : TypeToken<MEntity<Foods>>() {}.type)
+            val userMEntity = gson.fromJsonToGeneric<MEntity<Foods>>(result2)
+            Log.i("test", userMEntity.toString())
+            Log.i("gson", jsonString)
+            Log.i("jsonobj", jsonObj.names().toString())*/
+            /*val result = Forge.modelFromJson(result2, ::foodDeserializer)
+
+            when (result) {
+                DeserializedResult.Success -> {
+                    val food = result.value
+                    //success, do something with user
+                }
+
+                DeserializedResult.Failure -> {
+                    val error = result.error
+                    //failure, do something with error
+                }
+            }*/
         }
         backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -112,7 +194,21 @@ class StatisticsActivity : AppCompatActivity() {
         }
     }
 
-    fun parseItem(json: String) {
+    /*fun foodDeserializer(json: String) =
+            ::Foods.create.
+                    map(json at "ndbno").
+                    apply(json at "name").
+                    apply(json.list("nutrients", ::nutrientDeserializer))
+
+    val nutrientDeserializer = { json: JSON ->
+        ::Nutrient.create.map(json at "nutrient_id").
+                apply(json at "nutrient").
+                apply(json at "unit").
+                apply(json at "value").
+                apply(json at "gm")
+    }*/
+
+    /*fun parseItem(json: String) {
         val moshi = Moshi.Builder().build()
         val klaxon = Klaxon()
         //val jsonAdapter = moshi.adapter<Array<Report>>(Array<Report>::class.java)
@@ -128,11 +224,11 @@ class StatisticsActivity : AppCompatActivity() {
         }*/
         val gson: Gson = Gson()
         val jsonString: String = gson.toJson(jsonObj)
-        gson.fromJson<MEntity<Food>>(json, object : TypeToken<MEntity<Food>>() {}.type)
+        gson.fromJson<MEntity<Foods>>(json, object : TypeToken<MEntity<Foods>>() {}.type)
         // try arraylist
         // implement warnings if user injects more than recommended in a day, eats over a certain amount etc
         // user should inject roughly 1 units per 10 to 15 grams of carbs
-        val userMEntity = gson.fromJsonToGeneric<MEntity<Food>>(json)
+        val userMEntity = gson.fromJsonToGeneric<MEntity<Foods>>(json)
         Log.i("test", userMEntity.toString())
         Log.i("gson", jsonString)
         //val report = gson?.fromJson(jsonString, Reports.Report::class.java)
@@ -188,5 +284,5 @@ class StatisticsActivity : AppCompatActivity() {
     }
     inline fun <reified T> Gson.fromJsonToGeneric(json: String): T {
         return fromJson(json, object : TypeToken<T>() {}.type)
-    }
+    }*/
 }

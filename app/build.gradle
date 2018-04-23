@@ -44,6 +44,7 @@ dependencies {
     implementation 'org.jetbrains.anko:anko-common:0.9'
     implementation "com.squareup.moshi:moshi-adapters:$moshiVersion"
     implementation "com.squareup.moshi:moshi-kotlin:$moshiVersion"
+    implementation 'com.github.kittinunf.forge:forge:0.3.0'
 }
 
 

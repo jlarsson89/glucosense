@@ -1,9 +1,9 @@
 package glucosense.org
 
-internal class Foods {
-    val ndbno = ""
-    val name = ""
-    val weight = ""
-    val measure = ""
-    val nutrients = null
-}
+data class Foods(
+    val ndbno: String,
+    val name: String,
+    val weight: String,
+    val measure: String,
+    val nutrients: List<Nutrients>
+) {}
