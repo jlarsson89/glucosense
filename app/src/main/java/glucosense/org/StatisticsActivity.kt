@@ -28,6 +28,8 @@ import com.github.kittinunf.forge.Forge
 import com.github.kittinunf.forge.core.*
 import com.github.kittinunf.forge.util.create
 import com.google.gson.GsonBuilder
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 
 class StatisticsActivity : AppCompatActivity() {
@@ -192,6 +194,10 @@ class StatisticsActivity : AppCompatActivity() {
                 println(it.key)
                 println(it.value)
             }
+            val retrofit = Retrofit.Builder()
+                    .baseUrl(data)
+                    .addConverterFactory(MoshiConverterFactory.create())
+                    .build()
             //println(jsonList)
             //println(result2)
             //var nutrientlist: List<Nutrients> = gson2.fromJson(result2, object : TypeToken<List<Nutrients>>() {}.type)
