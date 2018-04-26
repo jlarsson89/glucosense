@@ -28,6 +28,9 @@ import com.github.kittinunf.forge.Forge
 import com.github.kittinunf.forge.core.*
 import com.github.kittinunf.forge.util.create
 import com.google.gson.GsonBuilder
+import com.squareup.moshi.Json
+import com.tickaroo.tikxml.TikXml
+import com.tickaroo.tikxml.annotation.Xml
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -39,8 +42,24 @@ class StatisticsActivity : AppCompatActivity() {
     var weight = "" // get proper value
     var realm = Realm.getDefaultInstance()
     val key: String = "NO01wqhp8hVdKJMgJRQqyu6syG9lwCUyBML6tmJE"
+
+    /*object Report {
+        data class Nutrients(
+                @Json(name = "nutrient_id") val nutrient_id: String,
+                @Json(name = "nutrient") val nutrient: String,
+                @Json(name = "unit") val unit: String,
+                @Json(name = "value") val value: String,
+                @Json(name = "gm") val gm: String)
+        data class Foods(
+                @Json(name = "ndbno") val ndbno: String,
+                @Json(name = "name") val name: String,
+                @Json(name = "weight") val weight: String,
+                @Json(name = "measure") val measure: String,
+                @Json(name = "nutrients") val nutrients: List<Nutrients>
+        )
+    }*/
     //var url = "https://api.nal.usda.gov/ndb/search/?format=json&q=$food&sort=n&max=25&offset=0&api_key=$key"
-    data class MEntity<T>(
+    /*data class MEntity<T>(
             var report: T? = null
     )
 
@@ -56,7 +75,7 @@ class StatisticsActivity : AppCompatActivity() {
             var unit: String,
             var value: String,
             var gm: String
-    )
+    )*/
     /*data class User(val id: Int,
                     val name: String,
                     val age: Int,
@@ -95,35 +114,27 @@ class StatisticsActivity : AppCompatActivity() {
         injTotalText.text = injectionModel.getInjections(realm).size.toString()
         injTodayText.text = injectionModel.getDayInjections(realm, formatted).size.toString()
         injUnitsTodayText.text = injectionModel.getDayUnits(realm, formatted)
-        Log.i("units", injectionModel.getDayUnits(realm, formatted).toInt().toString())
         if (injectionModel.getDayUnits(realm, formatted).toInt() == 0) {
             stats_injection.text = "You have not injected anything today."
         }
         else if (injectionModel.getDayUnits(realm, formatted).toInt() < (0.5 * weight.toInt())) {
-            //Log.i("today", injectionModel.getDayUnits(realm, formatted))
-            //Log.i("weight", weight)
-            //Log.i("weight", "you're injecting within your range")
             stats_injection.text = "You have not yet injected enough units today."
             injUnitsTodayText.setTextColor(Integer.parseUnsignedInt("ffffbb33",16))
         }
         else if (injectionModel.getDayUnits(realm, formatted).toInt() > (0.5 * weight.toInt()) &&
                 injectionModel.getDayUnits(realm, formatted).toInt() < (0.8 * weight.toInt())) {
-            //Log.i("today", injectionModel.getDayUnits(realm, formatted))
-            //Log.i("weight", weight)
-            //Log.i("weight", "you're injecting within your range")
             stats_injection.text = "You are injecting within your range."
             injUnitsTodayText.setTextColor(Integer.parseUnsignedInt("ff669900",16))
         }
         else {
-            //Log.i("today", injectionModel.getDayUnits(realm, formatted))
-            //Log.i("weight", weight)
-            //Log.i("weight", "you're injecting too much")
             stats_injection.text = "You have injected over your recommended limit based on your weight."
             injUnitsTodayText.setTextColor(Integer.parseUnsignedInt("ffcc0000", 16))
         }
         injUnitsTotalText.text = injectionModel.getTotalUnits(realm)
-        lastMealTimeText.text = mealModel.getMeals(realm).last()?._ID
-        todayMealsCountText.text = mealModel.getDayMeals(realm, formatted).size.toString()
+        if (mealModel.getMeals(realm).isNotEmpty()) {
+            lastMealTimeText.text = mealModel.getMeals(realm).last()?._ID
+            todayMealsCountText.text = mealModel.getDayMeals(realm, formatted).size.toString()
+        }
         if (mealModel.getDayMeals(realm, formatted).size == 0) {
             stats_meal.text = "You have not eaten anything yet today."
         }
@@ -131,17 +142,23 @@ class StatisticsActivity : AppCompatActivity() {
         Log.i("food", food)
         Log.i("key", key)
         val data = "https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=$key&nutrients=205&nutrients=204&nutrients=208&nutrients=269&ndbno=$food"
+        val data2 = "https://api.nal.usda.gov/ndb/nutrients/?format=xml&api_key=$key&nutrients=205&nutrients=204&nutrients=208&nutrients=269&ndbno=$food"
         foodid.text = food
         foodurl.text = data
         val executor = Executors.newScheduledThreadPool(4)
         async(executor) {
             val result2 = URL(data).readText()
+            val result3 = URL(data2).readText()
+            println(result3)
+            val parser = TikXml.Builder()
+                    .exceptionOnUnreadXml(true) // HtmlEscapeStringConverter encode / decode html characters. This class ships as optional dependency
+                    .build()
             //parseItem(result2)
-            val gson: Gson = Gson()
+            /*val gson: Gson = Gson()
             val gson3 = GsonBuilder().setLenient().create()
             val report1: Report = gson3.fromJson(result2, Report::class.java)
             val food1: Foods = gson.fromJson(result2, Foods::class.java)
-            val nutrient1: Nutrients = gson.fromJson(result2, Nutrients::class.java)
+            val nutrient1: Nutrients = gson.fromJson(result2, Nutrients::class.java)*/
             /*val moshi = Moshi.Builder().build()
             val jsonAdapter = moshi.adapter<Array<Report>>(Array<Report>::class.java)
             var reports: Array<Report>? = null
@@ -165,13 +182,13 @@ class StatisticsActivity : AppCompatActivity() {
             for (n in nutrients!!) {
                 println(n)
             }*/
-            println(result2)
+            /*println(result2)
             Log.i("report1", report1.toString())
             println(report1)
             Log.i("food1", food1.toString())
             println(food1)
             Log.i("nutrients1", nutrient1.toString())
-            println(nutrient1)
+            println(nutrient1)*/
             /*val json = """{"name": "Kolineer", "age": "26", "messages" : ["Master Kotlin","At Kolination"]}"""
             val person1 : Person = gson.fromJson(json, Person::class.java)
             println(person1)
@@ -192,7 +209,7 @@ class StatisticsActivity : AppCompatActivity() {
             println("=== Map to JSON ===")
             val jsonPersonMap: String = gson1.toJson(personMap)
             println(jsonPersonMap)*/
-            val gson2 = GsonBuilder().setPrettyPrinting().create()
+            /*val gson2 = GsonBuilder().setPrettyPrinting().create()
             var nutrientMap: Map<String, Any> = gson3.fromJson(result2, object : TypeToken<Map<String, Any>>() {}.type)
             nutrientMap.forEach{
                 println(it.key)
@@ -202,6 +219,7 @@ class StatisticsActivity : AppCompatActivity() {
                     .baseUrl(data)
                     .addConverterFactory(MoshiConverterFactory.create())
                     .build()
+            println(retrofit)*/
             //println(jsonList)
             //println(result2)
             //var nutrientlist: List<Nutrients> = gson2.fromJson(result2, object : TypeToken<List<Nutrients>>() {}.type)
