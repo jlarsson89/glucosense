@@ -1,9 +1,11 @@
 package glucosense.org
 
+import com.squareup.moshi.Json
+
 data class Foods(
-    val ndbno: String,
-    val name: String,
-    val weight: String,
-    val measure: String,
-    val nutrients: List<Nutrients>
+        @Json(name = "ndbno") val ndbno: String,
+        @Json(name = "name") val name: String,
+        @Json(name = "weight") val weight: String,
+        @Json(name = "measure") val measure: String,
+        @Json(name = "nutrients") val nutrients: List<Nutrients>
 ) {}
