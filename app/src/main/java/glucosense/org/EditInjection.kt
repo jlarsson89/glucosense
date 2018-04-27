@@ -24,19 +24,15 @@ class EditInjection : AppCompatActivity() {
         id = intent.extras.get("").toString()
         typeInput.hint = inj?.type
         unitsInput.hint = inj?.units
-        Log.i("time", inj?._ID)
-        Log.i("type", inj?.type)
-        Log.i("units", inj?.units)
         editButton.setOnClickListener{
-            if (inj?.type != null) {
-                Log.i("type", inj?.type.toString())
-                type = inj.type
+            if (typeInput.text.isNullOrBlank()) {
+                type = inj!!.type
             }
             else {
                 type = typeInput.text.toString()
             }
-            if (inj?.units != null) {
-                units = inj.units
+            if (unitsInput.text.isNullOrBlank()) {
+                units = inj!!.units
             }
             else {
                 units = unitsInput.text.toString()
@@ -46,7 +42,7 @@ class EditInjection : AppCompatActivity() {
                     type = type,
                     units = units
             )
-            injectionModel.editInjection(realm, newInj)
+            injectionModel.addInjection(realm, newInj)
             val intent = Intent(this, HistoryActivity::class.java)
             startActivity(intent)
         }

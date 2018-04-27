@@ -32,19 +32,6 @@ class InjectionModel : InjectionInterface {
         }
     }
 
-    override fun editInjection(realm: Realm, injection: Injection): Boolean {
-        try {
-            realm.beginTransaction()
-            realm.insertOrUpdate(injection)
-            realm.commitTransaction()
-            return true
-        }
-        catch (e: Exception) {
-            Log.i("exception", e.toString())
-            return false
-        }
-    }
-
     override fun getInjection(realm: Realm, _ID: String): Injection? {
         return realm.where(Injection::class.java).equalTo("_ID", _ID).findFirst()
     }
