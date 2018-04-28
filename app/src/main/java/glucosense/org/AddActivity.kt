@@ -14,7 +14,6 @@ class AddActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
         nextButton.setOnClickListener {
-            Log.i("press", "next")
             if (spinner.selectedItem.toString().equals("Injection")) {
                 val intent = Intent(this, InjectionActivity::class.java)
                 startActivity(intent)
@@ -25,7 +24,6 @@ class AddActivity : AppCompatActivity() {
             }
         }
         backButton.setOnClickListener {
-            Log.i("press", "back")
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }

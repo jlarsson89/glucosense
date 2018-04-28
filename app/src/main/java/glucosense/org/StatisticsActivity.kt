@@ -63,8 +63,6 @@ class StatisticsActivity : AppCompatActivity() {
         Log.i("food", food)
         Log.i("key", key)
         val data = "https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=$key&nutrients=205&nutrients=204&nutrients=208&nutrients=269&ndbno=$food"
-        foodid.text = food
-        foodurl.text = data
         val executor = Executors.newScheduledThreadPool(4)
         async(executor) {
             val json = URL(data).readText()

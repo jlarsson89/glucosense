@@ -2,9 +2,6 @@ package glucosense.org
 
 import io.realm.Realm
 
-/**
- * Created by johan on 10/03/18.
- */
 class GlucoseModel : GlucoseInterface {
     override fun addGlucose(realm: Realm, glucose: Glucose): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

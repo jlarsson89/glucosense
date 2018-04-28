@@ -13,7 +13,6 @@ class MealModel : MealInterface {
             return true
         }
         catch (e: Exception) {
-            Log.i("exception", e.toString())
             return false
         }
     }
@@ -26,7 +25,6 @@ class MealModel : MealInterface {
             return true
         }
         catch (e: Exception) {
-            Log.i("exception", e.toString())
             return false
         }    }
 

@@ -44,12 +44,7 @@ dependencies {
     implementation 'org.jetbrains.anko:anko-common:0.9'
     implementation "com.squareup.moshi:moshi-adapters:$moshiVersion"
     implementation "com.squareup.moshi:moshi-kotlin:$moshiVersion"
-    implementation 'com.github.kittinunf.forge:forge:0.3.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.3.0'
-    implementation 'com.tickaroo.tikxml:annotation:0.8.13'
-    implementation 'com.tickaroo.tikxml:core:0.8.13'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-simplexml:2.0.0'
 }
 
 

@@ -14,7 +14,6 @@ class InjectionModel : InjectionInterface {
             return true
         }
         catch (e: Exception) {
-            Log.i("exception", e.toString())
             return false
         }
     }
@@ -27,7 +26,6 @@ class InjectionModel : InjectionInterface {
             return true
         }
         catch (e: Exception) {
-            Log.i("exception", e.toString())
             return false
         }
     }
