@@ -9,8 +9,7 @@
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:title="@string/pref_title_server_address"
-        android:summary="should display ip"/>
+        android:title="@string/pref_title_server_address"/>
     <EditTextPreference
         android:defaultValue="@integer/pref_default_age"
         android:inputType="number"
@@ -18,8 +17,7 @@
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:title="@string/pref_title_age"
-        android:summary="should display age"/>
+        android:title="@string/pref_title_age"/>
     <EditTextPreference
         android:defaultValue="@integer/pref_default_height"
         android:inputType="number"
@@ -27,8 +25,7 @@
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:title="@string/pref_title_height"
-        android:summary="should display height"/>
+        android:title="@string/pref_title_height"/>
     <EditTextPreference
         android:id="@+id/user_weight"
         android:defaultValue="@integer/pref_default_weight"
@@ -37,8 +34,7 @@
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:title="@string/pref_title_weight"
-        android:summary="@+id/user_weight"/>
+        android:title="@string/pref_title_weight"/>
     <ListPreference
         android:defaultValue="1"
         android:entries="@array/pref_diabetes_type_titles"
@@ -46,8 +42,7 @@
         android:key="diabetes_type"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/pref_diabetes_type_title"
-        android:summary="should display type"/>
+        android:title="@string/pref_diabetes_type_title"/>
     <EditTextPreference
         android:defaultValue="1.0"
         android:inputType="numberDecimal"
@@ -55,17 +50,15 @@
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:title="@string/pref_range_start_title"
-        android:summary="should display range start"/>
+        android:title="@string/pref_range_start_title"/>
     <EditTextPreference
         android:defaultValue="1.0"
         android:inputType="numberDecimal"
-        android:key="example_text"
+        android:key="user_range_end"
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:title="@string/pref_range_end_title"
-        android:summary="should display range end"/>
+        android:title="@string/pref_range_end_title"/>
     <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
          dismiss it. -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->

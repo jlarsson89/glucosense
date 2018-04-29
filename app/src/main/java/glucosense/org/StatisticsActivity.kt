@@ -1,13 +1,17 @@
 package glucosense.org
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
+import android.view.View
+import com.beust.klaxon.*
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_statistics.*
 import org.jetbrains.anko.custom.async
+import java.io.BufferedReader
+import java.io.File
 import java.net.URL
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -59,20 +63,20 @@ class StatisticsActivity : AppCompatActivity() {
         if (mealModel.getDayMeals(realm, formatted).size == 0) {
             stats_meal.text = "You have not eaten anything yet today."
         }
-        var food = "01009"
-        Log.i("food", food)
-        Log.i("key", key)
+        val food = "01009"
         val data = "https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=$key&nutrients=205&nutrients=204&nutrients=208&nutrients=269&ndbno=$food"
         val executor = Executors.newScheduledThreadPool(4)
         async(executor) {
             val json = URL(data).readText()
-            val namestart = json.split("\"name\": \"")
-            val name = namestart[1].split("\",")
-            println(name[0])
-            val nutrients = json.split("\"nutrient\": \"")
-            for (i in nutrients[1]) {
-                println(i)
-            }
+            class Food (val ndbno: String, val name: String)
+            class Person (val name: String, var age: Int = 23)
+            val str = """{
+                "name": "John Smith",
+                }"""
+            val result = Klaxon().parse<Person>(str)
+            println(result?.name)
+            val klaxon = Klaxon().parse<Food>(json)
+            println(klaxon?.name)
         }
         backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
