@@ -18,6 +18,33 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.Executors
 
 class StatisticsActivity : AppCompatActivity() {
+    data class Response(
+            @Json(name = "report") val report: Report
+    )
+    data class Report(
+            val sr: String,
+            val groups: String,
+            val subset: String,
+            val end: String,
+            val start: String,
+            val total: String,
+            @Json(name = "foods") val food: Food
+    )
+    data class Food(
+            val ndbno: String,
+            val name: String,
+            val weight: String,
+            val measure: String,
+            @Json(name = "nutrients") val nutrient: Nutrient
+    )
+    data class Nutrient(
+            val nutrient_id: String,
+            val nutrient: String,
+            val unit: String,
+            val value: String,
+            val gm: String
+    )
+
     private var injectionModel = InjectionModel()
     private var mealModel = MealModel()
     private var ingredientModel = IngredientModel()
