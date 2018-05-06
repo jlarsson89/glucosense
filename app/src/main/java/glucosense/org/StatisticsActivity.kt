@@ -95,15 +95,15 @@ class StatisticsActivity : AppCompatActivity() {
         val executor = Executors.newScheduledThreadPool(4)
         async(executor) {
             val json = URL(data).readText()
-            class Food (val ndbno: String, val name: String)
+            //class Food (val ndbno: String, val name: String)
             class Person (val name: String, var age: Int = 23)
             val str = """{
                 "name": "John Smith",
                 }"""
             val result = Klaxon().parse<Person>(str)
             println(result?.name)
-            val klaxon = Klaxon().parse<Food>(json)
-            println(klaxon?.name)
+            val klaxon = Klaxon().parse<Response>(json)
+            println(klaxon?.report?.food?.name)
         }
         backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
