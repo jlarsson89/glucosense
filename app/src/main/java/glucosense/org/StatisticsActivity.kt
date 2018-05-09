@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.View
 import com.beust.klaxon.*
+import com.squareup.moshi.KotlinJsonAdapterFactory
+import com.squareup.moshi.Moshi
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_statistics.*
 import org.jetbrains.anko.custom.async
@@ -18,33 +20,6 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.Executors
 
 class StatisticsActivity : AppCompatActivity() {
-    data class Response(
-            @Json(name = "report") val report: Report
-    )
-    data class Report(
-            val sr: String,
-            val groups: String,
-            val subset: String,
-            val end: String,
-            val start: String,
-            val total: String,
-            @Json(name = "foods") val food: Food
-    )
-    data class Food(
-            val ndbno: String,
-            val name: String,
-            val weight: String,
-            val measure: String,
-            @Json(name = "nutrients") val nutrient: Nutrient
-    )
-    data class Nutrient(
-            val nutrient_id: String,
-            val nutrient: String,
-            val unit: String,
-            val value: String,
-            val gm: String
-    )
-
     private var injectionModel = InjectionModel()
     private var mealModel = MealModel()
     private var ingredientModel = IngredientModel()
@@ -95,6 +70,13 @@ class StatisticsActivity : AppCompatActivity() {
         val executor = Executors.newScheduledThreadPool(4)
         async(executor) {
             val json = URL(data).readText()
+            val moshi = Moshi.Builder()
+                    .add(DefaultOnDataMismatchAdapter.newFactory(Report::class.java, null))
+                    .add(DefaultOnDataMismatchAdapter.newFactory(Food::class.java, null))
+                    .add(DefaultOnDataMismatchAdapter.newFactory(Nutrient::class.java, null))
+                    .add(KotlinJsonAdapterFactory())
+                    .build()
+            println(json)
             //class Food (val ndbno: String, val name: String)
             class Person (val name: String, var age: Int = 23)
             val str = """{
@@ -103,7 +85,8 @@ class StatisticsActivity : AppCompatActivity() {
             val result = Klaxon().parse<Person>(str)
             println(result?.name)
             val klaxon = Klaxon().parse<Response>(json)
-            println(klaxon?.report?.food?.name)
+            println(klaxon.toString())
+            println(moshi)
         }
         backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
